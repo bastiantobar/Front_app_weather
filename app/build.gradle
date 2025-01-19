@@ -67,7 +67,15 @@ dependencies {
     // Retrofit para las peticiones HTTP
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
     implementation 'com.google.android.material:material:1.9.0'
+    // Biblioteca AndroidSVG para manejar imágenes SVG
+    implementation 'com.caverock:androidsvg:1.4'
+
+    // Biblioteca GestureViews para zoom y gestos
+    implementation 'com.alexvasilkov:gesture-views:2.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
     // OkHttp para el logging de las peticiones (opcional)
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
     androidTestImplementation platform(libs.compose.bom)
