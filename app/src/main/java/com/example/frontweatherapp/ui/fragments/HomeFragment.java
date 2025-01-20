@@ -1,5 +1,6 @@
 package com.example.frontweatherapp.ui.fragments;
 
+import android.content.Context;
 import android.graphics.drawable.PictureDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -93,12 +94,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchInstantWeather() {
-        Log.d(TAG, "Iniciando la solicitud para obtener el clima instantáneo.");
+        Log.d(TAG, "Iniciando la solicitud para obtener el último clima instantáneo.");
         WeatherApiService apiService = RetrofitClient.getInstance(requireContext()).create(WeatherApiService.class);
 
         // Recuperar el token de SharedPreferences
         String token = requireContext()
-                .getSharedPreferences("APP_PREFS", getContext().MODE_PRIVATE)
+                .getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
                 .getString("TOKEN", null);
 
         if (token == null || token.isEmpty()) {
@@ -107,7 +108,7 @@ public class HomeFragment extends Fragment {
             return;
         }
 
-        apiService.getInstantWeather("Bearer " + token).enqueue(new Callback<InstantWeather>() {
+        apiService.getLastInstantWeather("Bearer " + token, "application/json").enqueue(new Callback<InstantWeather>() {
             @Override
             public void onResponse(Call<InstantWeather> call, Response<InstantWeather> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -137,12 +138,13 @@ public class HomeFragment extends Fragment {
     }
 
 
+
     private void startWeatherUpdates() {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Log.d(TAG, "Actualización periódica del clima.");
-                fetchInstantWeather();
+                //fetchInstantWeather();
                 handler.postDelayed(this, UPDATE_INTERVAL);
             }
         }, 0);

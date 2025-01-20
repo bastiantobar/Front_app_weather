@@ -22,12 +22,13 @@ public class RetrofitClient {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            // Interceptor para agregar el token de autorización y el encabezado "Accept"
+            // Interceptor para agregar el token de autorización y configurar encabezados dinámicos
             Interceptor authInterceptor = chain -> {
                 Request original = chain.request();
 
                 // Excluir el token en solicitudes al endpoint de login
                 if (original.url().encodedPath().equals("/auth/login")) {
+                    Log.d(TAG, "Solicitud al endpoint de login. No se agrega token.");
                     return chain.proceed(original);
                 }
 
@@ -35,28 +36,31 @@ public class RetrofitClient {
                 SharedPreferences preferences = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
                 String token = preferences.getString("TOKEN", null);
 
+                Request.Builder builder = original.newBuilder();
+
+                // Configurar encabezado Accept dinámicamente
+                if (original.url().encodedPath().contains("/weather/instant/last")) {
+                    builder.header("Accept", "application/json");
+                } else if (original.url().encodedPath().contains("/weather/grafic")) {
+                    builder.header("Accept", "image/svg+xml");
+                }
+
+                // Agregar el token de autorización si está disponible
                 if (token != null) {
-                    // Validar si el token ya incluye el prefijo "Bearer"
                     String formattedToken = token.startsWith("Bearer ") ? token : "Bearer " + token.trim();
                     Log.d(TAG, "Enviando token: " + formattedToken);
-
-                    // Modificar la solicitud para incluir encabezados
-                    Request modified = original.newBuilder()
-                            .header("Authorization", formattedToken)
-                            .header("Accept", "image/svg+xml") // Encabezado específico para el gráfico
-                            .build();
-                    return chain.proceed(modified);
+                    builder.header("Authorization", formattedToken);
                 } else {
                     Log.e(TAG, "Token no encontrado. Se envía sin autorización.");
                 }
 
-                return chain.proceed(original);
+                return chain.proceed(builder.build());
             };
 
-            // Crear el cliente HTTP con los interceptores
+            // Crear cliente HTTP con los interceptores
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(loggingInterceptor) // Interceptor para logging
-                    .addInterceptor(authInterceptor) // Interceptor para autorización
+                    .addInterceptor(authInterceptor) // Interceptor para autorización y encabezados dinámicos
                     .build();
 
             // Crear instancia de Retrofit
