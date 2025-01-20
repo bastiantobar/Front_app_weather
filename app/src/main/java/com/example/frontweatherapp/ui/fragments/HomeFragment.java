@@ -4,11 +4,13 @@ import android.content.Context;
 import android.graphics.drawable.PictureDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +35,11 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
     private static final int UPDATE_INTERVAL = 10 * 60 * 1000; // 10 minutos
+
     private ImageView meteogramImageView;
-    private TextView weatherInfo;
-    private final Handler handler = new Handler();
+    private TextView tempText, humidityText, pressureText, windText, cloudText;
+    private ProgressBar progressBar;
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Nullable
     @Override
@@ -44,49 +48,49 @@ public class HomeFragment extends Fragment {
 
         // Inicializar vistas
         meteogramImageView = rootView.findViewById(R.id.meteogramImageView);
-        weatherInfo = rootView.findViewById(R.id.weatherInfo);
+        tempText = rootView.findViewById(R.id.tempText);
+        humidityText = rootView.findViewById(R.id.humidityText);
+        pressureText = rootView.findViewById(R.id.pressureText);
+        windText = rootView.findViewById(R.id.windText);
+        cloudText = rootView.findViewById(R.id.cloudText);
+        progressBar = rootView.findViewById(R.id.progressBar);
 
-        // Llamar al servicio para obtener el meteograma y datos instantáneos
+        // Llamar al servicio para obtener el meteograma y los datos instantáneos
         fetchMeteogram();
         fetchInstantWeather();
 
         // Configurar actualización periódica
-        startWeatherUpdates();
+        scheduleUpdates();
 
         return rootView;
     }
 
     private void fetchMeteogram() {
-        Log.d(TAG, "Iniciando la solicitud para obtener el meteograma.");
-        WeatherApiService apiService = RetrofitClient.getInstance(requireContext()).create(WeatherApiService.class);
+        showLoading(true);
 
+        WeatherApiService apiService = RetrofitClient.getInstance(requireContext()).create(WeatherApiService.class);
         apiService.getMeteogram("image/svg+xml").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.d(TAG, "Respuesta recibida del servidor. Código: " + response.code());
+                showLoading(false);
                 if (response.isSuccessful() && response.body() != null) {
                     try (InputStream inputStream = response.body().byteStream()) {
-                        Log.d(TAG, "Procesando el archivo SVG.");
-
-                        // Procesar el SVG
                         SVG svg = SVG.getFromInputStream(inputStream);
                         PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-
                         meteogramImageView.setImageDrawable(drawable);
-                        Log.d(TAG, "SVG procesado y renderizado correctamente.");
-
                     } catch (Exception e) {
                         Log.e(TAG, "Error al procesar el SVG.", e);
                         showToast("Error al mostrar el gráfico.");
                     }
                 } else {
-                    Log.e(TAG, "Error en la respuesta del servidor. Código: " + response.code());
+                    Log.e(TAG, "Error en la respuesta del servidor.");
                     showToast("Error al obtener el meteograma.");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                showLoading(false);
                 Log.e(TAG, "Error en la solicitud al servidor.", t);
                 showToast("Error de red al obtener el meteograma.");
             }
@@ -94,16 +98,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchInstantWeather() {
-        Log.d(TAG, "Iniciando la solicitud para obtener el último clima instantáneo.");
-        WeatherApiService apiService = RetrofitClient.getInstance(requireContext()).create(WeatherApiService.class);
+        showLoading(true);
 
-        // Recuperar el token de SharedPreferences
+        WeatherApiService apiService = RetrofitClient.getInstance(requireContext()).create(WeatherApiService.class);
         String token = requireContext()
                 .getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
                 .getString("TOKEN", null);
 
         if (token == null || token.isEmpty()) {
-            Log.e(TAG, "Token no disponible. No se puede obtener el clima instantáneo.");
+            showLoading(false);
             showToast("Error: no hay token disponible.");
             return;
         }
@@ -111,54 +114,61 @@ public class HomeFragment extends Fragment {
         apiService.getLastInstantWeather("Bearer " + token, "application/json").enqueue(new Callback<InstantWeather>() {
             @Override
             public void onResponse(Call<InstantWeather> call, Response<InstantWeather> response) {
+                showLoading(false);
                 if (response.isSuccessful() && response.body() != null) {
                     InstantWeather weather = response.body();
-                    String info = String.format(
-                            "Temperatura: %.1f°C\nHumedad: %.1f%%\nPresión: %.1f hPa\nViento: %.1f m/s\nNubosidad: %.1f%%",
-                            weather.getAirTemperature(),
-                            weather.getRelativeHumidity(),
-                            weather.getAirPressureAtSeaLevel(),
-                            weather.getWindSpeed(),
-                            weather.getCloudAreaFraction()
-                    );
-                    weatherInfo.setText(info);
-                    Log.d(TAG, "Datos de clima actualizados: " + info);
+
+                    // Actualizar los datos del clima en los TextView
+                    tempText.setText(String.format("Temperatura: %.1f°C", weather.getAirTemperature()));
+                    humidityText.setText(String.format("Humedad: %.1f%%", weather.getRelativeHumidity()));
+                    pressureText.setText(String.format("Presión: %.1f hPa", weather.getAirPressureAtSeaLevel()));
+                    windText.setText(String.format("Viento: %.1f m/s", weather.getWindSpeed()));
+                    cloudText.setText(String.format("Nubosidad: %.1f%%", weather.getCloudAreaFraction()));
+
+                    showToast("Información del clima actualizada.");
                 } else {
-                    Log.e(TAG, "Error en la respuesta del servidor. Código: " + response.code());
                     showToast("Error al obtener el clima instantáneo.");
                 }
             }
 
             @Override
             public void onFailure(Call<InstantWeather> call, Throwable t) {
+                showLoading(false);
                 Log.e(TAG, "Error en la solicitud al servidor.", t);
                 showToast("Error de red al obtener el clima instantáneo.");
             }
         });
     }
 
-
-
-    private void startWeatherUpdates() {
+    private void scheduleUpdates() {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Actualización periódica del clima.");
-                //fetchInstantWeather();
-                handler.postDelayed(this, UPDATE_INTERVAL);
+                fetchInstantWeather(); // Actualizar los datos del clima
+                handler.postDelayed(this, UPDATE_INTERVAL); // Reprogramar actualización
             }
-        }, 0);
+        }, UPDATE_INTERVAL);
+    }
+
+    private void showLoading(boolean isLoading) {
+        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        tempText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+        humidityText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+        pressureText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+        windText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+        cloudText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+        meteogramImageView.setVisibility(isLoading ? View.GONE : View.VISIBLE);
     }
 
     private void showToast(String message) {
         if (getActivity() != null) {
-            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        handler.removeCallbacksAndMessages(null); // Detener las actualizaciones cuando se destruya la vista
+        handler.removeCallbacksAndMessages(null); // Detener actualizaciones automáticas
     }
 }
