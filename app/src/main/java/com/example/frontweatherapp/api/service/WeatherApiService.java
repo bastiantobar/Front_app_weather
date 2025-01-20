@@ -11,7 +11,7 @@ import com.example.frontweatherapp.models.InstantWeather;
 
 public interface WeatherApiService {
 
-    @GET("/weather/grafic") // Asegúrate de que esta URL coincida con tu backend
+    @GET("/weather/grafic")
     Call<ResponseBody> getMeteogram(@Header("Accept") String accept);
 
     @GET("/weather/instant/last")

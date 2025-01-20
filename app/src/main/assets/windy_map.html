@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Mapa de Vientos con Windy API</title>
+    <!-- Incluye Leaflet.js (necesario para Windy API) -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <!-- Incluye la librería de Windy -->
+    <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
+    <style>
+        #windy {
+            width: 100%;
+            height: 100vh; /* Pantalla completa */
+        }
+    </style>
+</head>
+<body>
+<!-- Contenedor del mapa -->
+<div id="windy"></div>
+
+<script>
+    try {
+        // URL de tu REST API
+       const apiUrl = 'http://10.0.2.2:8080/weather/wind-map/last'; // Dirección para emulador
+
+
+        // Obtener el token desde Android (interfaz de JavaScript)
+        const token = Android.getAuthToken();
+        console.log("Token recibido desde Android:", token);
+
+        // Configuración para inicializar el mapa Windy
+        const options = {
+            key: 'oYG10IzjupdtGHlfnHnmKj2IvrLPvZZD', // Tu clave de Windy API
+            verbose: true, // Mostrar información adicional en consola
+            lat: 0, // Valores temporales, se ajustarán con la respuesta del REST
+            lon: 0,
+            zoom: 5,
+        };
+
+        // Función para inicializar Windy con datos del REST
+        function initializeWindy(data) {
+            console.log("Datos de viento recibidos para inicializar el mapa:", data);
+
+            // Extraer datos del REST
+            const coordinates = data.features[0].geometry.coordinates;
+            const properties = data.features[0].properties;
+
+            options.lat = coordinates[1]; // Latitud del punto
+            options.lon = coordinates[0]; // Longitud del punto
+
+            // Inicializa la API de Windy
+            windyInit(options, (windyAPI) => {
+                const { map } = windyAPI;
+
+                // Agrega un popup con los datos del viento
+                const popupContent = `
+                    <b>Velocidad del Viento:</b> ${properties.windSpeed} m/s<br>
+                    <b>Dirección del Viento:</b> ${properties.windDirection}°<br>
+                `;
+
+                L.popup()
+                    .setLatLng([coordinates[1], coordinates[0]])
+                    .setContent(popupContent)
+                    .openOn(map);
+            });
+        }
+
+        // Hacer la solicitud al REST API con el token en el encabezado
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                console.log("Respuesta del REST API:", response);
+                if (!response.ok) {
+                    throw new Error('Error al obtener datos del REST API');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Datos recibidos del REST:', data);
+                initializeWindy(data); // Inicializar Windy con los datos recibidos
+            })
+            .catch(error => {
+                console.error('Error al obtener datos del REST:', error);
+                alert('No se pudieron cargar los datos del mapa de vientos.');
+            });
+    } catch (error) {
+        console.error("Error al obtener el token desde Android:", error);
+    }
+</script>
+</body>
+</html>
