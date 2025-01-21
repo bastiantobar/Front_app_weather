@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.ui.fragments.HomeFragment;
-import com.example.frontweatherapp.ui.fragments.ProfileFragment;
-import com.example.frontweatherapp.ui.fragments.SettingsFragment;
+import com.example.frontweatherapp.ui.fragments.MapFragment;
+import com.example.frontweatherapp.ui.fragments.HistoryFragment;
 import com.example.frontweatherapp.ui.login.MainActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,9 +40,9 @@ public class MainMenuActivity extends AppCompatActivity {
             if (itemId == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
             } else if (itemId == R.id.nav_profile) {
-                selectedFragment = new ProfileFragment();
+                selectedFragment = new MapFragment();
             } else if (itemId == R.id.nav_settings) {
-                selectedFragment = new SettingsFragment();
+                selectedFragment = new HistoryFragment();
             }
 
             if (selectedFragment != null) {

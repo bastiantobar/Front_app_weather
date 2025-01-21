@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.frontweatherapp.R;
 
-public class ProfileFragment extends Fragment {
+public class MapFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
     private WebView webView;

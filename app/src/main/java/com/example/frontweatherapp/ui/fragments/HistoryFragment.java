@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.frontweatherapp.R;
 
-public class SettingsFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
     @Nullable
     @Override
