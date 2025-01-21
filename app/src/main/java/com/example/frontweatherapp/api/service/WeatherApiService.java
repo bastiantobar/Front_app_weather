@@ -7,6 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import com.example.frontweatherapp.models.InstantWeather;
+import com.example.frontweatherapp.models.WeatherData;
 
 
 public interface WeatherApiService {
@@ -20,6 +21,7 @@ public interface WeatherApiService {
             @Header("Accept") String accept
     );
 
-
+    @GET("weather/hourly")
+    Call<List<WeatherData>> getHourlyForecasts(@Header("Authorization") String token);
 
 }

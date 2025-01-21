@@ -35,7 +35,7 @@
         android:id="@+id/button_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Registrar Usuario"
         app:layout_constraintTop_toBottomOf="@id/editTextPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
