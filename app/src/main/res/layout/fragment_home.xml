@@ -24,7 +24,7 @@
             android:id="@+id/titleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Weather Forecast"
+            android:text="Información en tiempo Real"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"

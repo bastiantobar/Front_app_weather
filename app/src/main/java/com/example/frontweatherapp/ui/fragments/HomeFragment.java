@@ -34,12 +34,15 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
-    private static final int UPDATE_INTERVAL = 10 * 60 * 1000; // 10 minutos
+    private static final int UPDATE_INTERVAL = 10 * 1000; // 10 segundos
+
+   // private static final int UPDATE_INTERVAL = 10 * 60 * 1000; // 10 minutos
 
     private ImageView meteogramImageView;
     private TextView tempText, humidityText, pressureText, windText, cloudText;
     private ProgressBar progressBar;
     private final Handler handler = new Handler(Looper.getMainLooper());
+    private int pendingRequests = 0; // Contador de solicitudes pendientes
 
     @Nullable
     @Override
@@ -55,6 +58,9 @@ public class HomeFragment extends Fragment {
         cloudText = rootView.findViewById(R.id.cloudText);
         progressBar = rootView.findViewById(R.id.progressBar);
 
+        // Mostrar loading inicialmente
+        showLoading(true);
+
         // Llamar al servicio para obtener el meteograma y los datos instantáneos
         fetchMeteogram();
         fetchInstantWeather();
@@ -66,13 +72,13 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchMeteogram() {
-        showLoading(true);
+        incrementPendingRequests();
 
         WeatherApiService apiService = RetrofitClient.getInstance(requireContext()).create(WeatherApiService.class);
         apiService.getMeteogram("image/svg+xml").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                showLoading(false);
+                decrementPendingRequests();
                 if (response.isSuccessful() && response.body() != null) {
                     try (InputStream inputStream = response.body().byteStream()) {
                         SVG svg = SVG.getFromInputStream(inputStream);
@@ -90,7 +96,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                showLoading(false);
+                decrementPendingRequests();
                 Log.e(TAG, "Error en la solicitud al servidor.", t);
                 showToast("Error de red al obtener el meteograma.");
             }
@@ -98,7 +104,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchInstantWeather() {
-        showLoading(true);
+        incrementPendingRequests();
 
         WeatherApiService apiService = RetrofitClient.getInstance(requireContext()).create(WeatherApiService.class);
         String token = requireContext()
@@ -106,7 +112,7 @@ public class HomeFragment extends Fragment {
                 .getString("TOKEN", null);
 
         if (token == null || token.isEmpty()) {
-            showLoading(false);
+            decrementPendingRequests();
             showToast("Error: no hay token disponible.");
             return;
         }
@@ -114,7 +120,7 @@ public class HomeFragment extends Fragment {
         apiService.getLastInstantWeather("Bearer " + token, "application/json").enqueue(new Callback<InstantWeather>() {
             @Override
             public void onResponse(Call<InstantWeather> call, Response<InstantWeather> response) {
-                showLoading(false);
+                decrementPendingRequests();
                 if (response.isSuccessful() && response.body() != null) {
                     InstantWeather weather = response.body();
 
@@ -125,19 +131,33 @@ public class HomeFragment extends Fragment {
                     windText.setText(String.format("Viento: %.1f m/s", weather.getWindSpeed()));
                     cloudText.setText(String.format("Nubosidad: %.1f%%", weather.getCloudAreaFraction()));
 
-                    showToast("Información del clima actualizada.");
+                    // Mostrar mensaje de éxito
+                    showToast("Información actualizada correctamente");
                 } else {
                     showToast("Error al obtener el clima instantáneo.");
                 }
             }
 
+
             @Override
             public void onFailure(Call<InstantWeather> call, Throwable t) {
-                showLoading(false);
+                decrementPendingRequests();
                 Log.e(TAG, "Error en la solicitud al servidor.", t);
                 showToast("Error de red al obtener el clima instantáneo.");
             }
         });
+    }
+
+    private void incrementPendingRequests() {
+        pendingRequests++;
+        showLoading(true);
+    }
+
+    private void decrementPendingRequests() {
+        pendingRequests--;
+        if (pendingRequests == 0) {
+            showLoading(false);
+        }
     }
 
     private void scheduleUpdates() {
@@ -145,19 +165,23 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 fetchInstantWeather(); // Actualizar los datos del clima
+                showToast("Información actualizada correctamente"); // Mostrar mensaje
                 handler.postDelayed(this, UPDATE_INTERVAL); // Reprogramar actualización
             }
         }, UPDATE_INTERVAL);
     }
 
+
     private void showLoading(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        tempText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
-        humidityText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
-        pressureText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
-        windText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
-        cloudText.setVisibility(isLoading ? View.GONE : View.VISIBLE);
-        meteogramImageView.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+
+        int visibility = isLoading ? View.GONE : View.VISIBLE;
+        tempText.setVisibility(visibility);
+        humidityText.setVisibility(visibility);
+        pressureText.setVisibility(visibility);
+        windText.setVisibility(visibility);
+        cloudText.setVisibility(visibility);
+        meteogramImageView.setVisibility(visibility);
     }
 
     private void showToast(String message) {
