@@ -164,12 +164,13 @@ public class HomeFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                fetchInstantWeather(); // Actualizar los datos del clima
-                showToast("Información actualizada correctamente"); // Mostrar mensaje
-                handler.postDelayed(this, UPDATE_INTERVAL); // Reprogramar actualización
+                fetchInstantWeather(); // Actualizar solo los TextView
+                showToast("Datos de clima actualizados"); // Mostrar mensaje de actualización
+                handler.postDelayed(this, UPDATE_INTERVAL); // Reprogramar la actualización
             }
         }, UPDATE_INTERVAL);
     }
+
 
 
     private void showLoading(boolean isLoading) {
@@ -181,8 +182,11 @@ public class HomeFragment extends Fragment {
         pressureText.setVisibility(visibility);
         windText.setVisibility(visibility);
         cloudText.setVisibility(visibility);
-        meteogramImageView.setVisibility(visibility);
+
+        // El gráfico siempre será visible
+        meteogramImageView.setVisibility(View.VISIBLE);
     }
+
 
     private void showToast(String message) {
         if (getActivity() != null) {
