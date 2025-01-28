@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "418606530296",
+    "firebase_url": "https://base-app-weather-default-rtdb.firebaseio.com",
+    "project_id": "base-app-weather",
+    "storage_bucket": "base-app-weather.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418606530296:android:b5479a30b170a6def7450d",
+        "android_client_info": {
+          "package_name": "com.example.frontweatherapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWE-HpYHU3YIwbXbJSAd7RyYeSopqVEik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
