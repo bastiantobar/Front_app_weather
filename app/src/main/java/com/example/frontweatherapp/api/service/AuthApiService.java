@@ -25,5 +25,9 @@ public interface AuthApiService {
             @Header("Authorization") String authToken,
             @Body Map<String, String> body
     );
-
+    @POST("/auth/create-preferences")
+    Call<Void> createPreferences(
+            @Header("Authorization") String authToken,
+            @Body Map<String, Object> preferences
+    );
 }

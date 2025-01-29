@@ -1,4 +1,4 @@
-package com.example.frontweatherapp.ui.login;
+package com.example.frontweatherapp.ui;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -8,9 +8,7 @@ import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.frontweatherapp.R;

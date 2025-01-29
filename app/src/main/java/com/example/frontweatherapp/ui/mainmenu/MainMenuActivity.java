@@ -13,7 +13,7 @@ import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.ui.fragments.HomeFragment;
 import com.example.frontweatherapp.ui.fragments.MapFragment;
 import com.example.frontweatherapp.ui.fragments.HistoryFragment;
-import com.example.frontweatherapp.ui.login.MainActivity;
+import com.example.frontweatherapp.ui.MainActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainMenuActivity extends AppCompatActivity {

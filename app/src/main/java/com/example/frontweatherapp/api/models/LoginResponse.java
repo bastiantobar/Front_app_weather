@@ -3,7 +3,6 @@ package com.example.frontweatherapp.api.models;
 public class LoginResponse {
     private String token;
 
-    // Constructor vacío (opcional, pero recomendado para Gson)
     public LoginResponse() {}
 
     // Getter y Setter para el token

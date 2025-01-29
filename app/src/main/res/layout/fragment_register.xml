@@ -26,17 +26,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
+    <!-- Switches alineados correctamente -->
+    <Switch
+        android:id="@+id/switchTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperatura"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <Switch
+        android:id="@+id/switchWind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Viento"
+        app:layout_constraintTop_toBottomOf="@id/switchTemperature"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <Switch
+        android:id="@+id/switchHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Humedad"
+        app:layout_constraintTop_toBottomOf="@id/switchWind"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
     <Button
         android:id="@+id/registerButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Registrar"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
+        app:layout_constraintTop_toBottomOf="@id/switchHumidity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
-    <!-- Botón para volver al login -->
     <Button
         android:id="@+id/backToLoginButton"
         android:layout_width="0dp"
