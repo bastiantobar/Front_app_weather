@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.frontweatherapp.R;
-import com.example.frontweatherapp.models.WeatherData;
+import com.example.frontweatherapp.api.models.WeatherData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

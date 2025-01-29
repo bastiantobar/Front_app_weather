@@ -1,4 +1,4 @@
-package com.example.frontweatherapp.models;
+package com.example.frontweatherapp.api.models;
 
 public class WeatherData {
     private String time;

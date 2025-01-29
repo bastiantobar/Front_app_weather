@@ -6,8 +6,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import com.example.frontweatherapp.models.InstantWeather;
-import com.example.frontweatherapp.models.WeatherData;
+import com.example.frontweatherapp.api.models.InstantWeather;
+import com.example.frontweatherapp.api.models.WeatherData;
 
 
 public interface WeatherApiService {

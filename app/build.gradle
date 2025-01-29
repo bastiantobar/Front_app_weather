@@ -62,6 +62,7 @@ dependencies {
     implementation libs.ui.graphics
     implementation libs.ui.tooling.preview
     implementation libs.material3
+    implementation libs.cardview  // Referencia correcta a CardView
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -84,7 +85,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.2.0') // Firebase BOM para manejar versiones compatibles
     implementation 'com.google.firebase:firebase-messaging' // Firebase Messaging para notificaciones push
 
-
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.google.android.material:material:1.6.1'  // Versión estable de ConstraintLayout
     androidTestImplementation platform(libs.compose.bom)
     androidTestImplementation libs.ui.test.junit4
     debugImplementation libs.ui.tooling
