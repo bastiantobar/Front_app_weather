@@ -11,6 +11,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,17 +24,25 @@ public class MapFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
     private WebView webView;
     private ProgressBar loadingIndicator;
+    private TextView cardInfo1, cardInfo2;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+        // Referencias a los elementos del layout
         webView = view.findViewById(R.id.webView);
-        loadingIndicator = view.findViewById(R.id.loadingIndicator); // Referencia al ProgressBar
+        loadingIndicator = view.findViewById(R.id.loadingIndicator);
+        cardInfo1 = view.findViewById(R.id.cardInfo1);
+        cardInfo2 = view.findViewById(R.id.cardInfo2);
+
+        // Establecer los valores estáticos en las tarjetas
+        cardInfo1.setText("Valor 1: 23°C");
+        cardInfo2.setText("Valor 2: 10 km/h");
 
         WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true); // Habilitar JavaScript
+        webSettings.setJavaScriptEnabled(true);
 
         // Mostrar el indicador de carga antes de iniciar
         loadingIndicator.setVisibility(View.VISIBLE);
@@ -79,7 +88,6 @@ public class MapFragment extends Fragment {
         private final String token;
 
         AuthTokenProvider(String token) {
-            // Remover 'Bearer ' si está presente
             if (token.startsWith("Bearer ")) {
                 this.token = token.replace("Bearer ", "");
             } else {
