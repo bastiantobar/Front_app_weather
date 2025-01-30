@@ -5,4 +5,8 @@
     <color name="light_gray">#D3D3D3</color>
     <color name="dark_gray">#444444</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="hotTemperatureColor">#FF5722</color> <!-- Rojo -->
+    <color name="warmTemperatureColor">#FF9800</color> <!-- Naranja -->
+    <color name="coldTemperatureColor">#2196F3</color>
+    <!-- Azul -->
 </resources>

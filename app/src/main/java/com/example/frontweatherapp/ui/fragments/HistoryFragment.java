@@ -1,11 +1,16 @@
 package com.example.frontweatherapp.ui.fragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.PictureDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.caverock.androidsvg.SVG;
 import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.api.service.WeatherApiService;
 import com.example.frontweatherapp.models.models.WeatherData;
@@ -26,12 +32,14 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,12 +47,15 @@ import retrofit2.Response;
 public class HistoryFragment extends Fragment {
 
     private ProgressBar progressBar;
+    private ImageView meteogramImageView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
+
+        meteogramImageView = rootView.findViewById(R.id.meteogramImageView);
 
         LineChart lineChart = rootView.findViewById(R.id.lineChart);
 
@@ -185,5 +196,40 @@ public class HistoryFragment extends Fragment {
         minPrecipitationValue.setText(String.format("%.1f mm", minPrecipitation));
     }
 
+    private void fetchMeteogram() {
 
+
+        WeatherApiService apiService = RetrofitClient.getInstance(requireContext()).create(WeatherApiService.class);
+        apiService.getMeteogram("image/svg+xml").enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+                    try (InputStream inputStream = response.body().byteStream()) {
+                        SVG svg = SVG.getFromInputStream(inputStream);
+                        PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
+                        meteogramImageView.setImageDrawable(drawable);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error al procesar el SVG.", e);
+                        showToast("Error al mostrar el gráfico.");
+                    }
+                } else {
+                    Log.e(TAG, "Error en la respuesta del servidor.");
+                    showToast("Error al obtener el meteograma.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                Log.e(TAG, "Error en la solicitud al servidor.", t);
+                showToast("Error de red al obtener el meteograma.");
+            }
+        });
+    }
+    private void showToast(String message) {
+        if (getActivity() != null) {
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

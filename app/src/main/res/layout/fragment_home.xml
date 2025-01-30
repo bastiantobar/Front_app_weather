@@ -1,168 +1,245 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@android:color/white">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-        <!-- ProgressBar para mostrar el estado de carga -->
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-
-        <!-- Título -->
-        <TextView
-            android:id="@+id/titleText"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Información en tiempo Real"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:paddingBottom="16dp" />
+            android:layout_height="match_parent">
 
-        <!-- Información del clima con iconos -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:background="@drawable/background_card"
-            android:elevation="4dp">
-
-            <!-- Temperatura -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="8dp">
+                android:orientation="vertical"
+                android:gravity="center">
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_wind"
-                    android:contentDescription="Temperatura" />
-
+                <!-- Título -->
                 <TextView
-                    android:id="@+id/tempText"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/titleText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Temperatura: 0°C"
-                    android:textSize="16sp"
-                    android:paddingStart="8dp" />
+                    android:text="Información en tiempo Real"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="16dp" />
+
+                <!-- Temperatura Grande en la parte superior -->
+                <TextView
+                    android:id="@+id/currentTempLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0°C"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Icono dinámico del clima -->
+                <ImageView
+                    android:id="@+id/weatherIcon"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="Weather Icon"
+                    android:src="@drawable/ic_sun" />
+
+                <!-- Última actualización -->
+                <TextView
+                    android:id="@+id/lastUpdatedText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Última actualización: 12:45"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:textColor="#888888"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Card para Temperatura (Primera Fila) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/tempCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_sun"
+                            android:contentDescription="Temperatura" />
+
+                        <TextView
+                            android:id="@+id/tempText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Temperatura: 0°C"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- GridLayout para las 4 tarjetas restantes en 2 filas -->
+                <androidx.gridlayout.widget.GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:columnCount="2"
+                    app:useDefaultMargins="true"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Card para Humedad -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/humidityCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:layout_columnWeight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_humidity"
+                                android:contentDescription="Humedad" />
+
+                            <TextView
+                                android:id="@+id/humidityText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Humedad: 0%"
+                                android:textSize="16sp"
+                                android:paddingStart="8dp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Card para Presión -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/pressureCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:layout_columnWeight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_pressure"
+                                android:contentDescription="Presión" />
+
+                            <TextView
+                                android:id="@+id/pressureText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Presión: 0 hPa"
+                                android:textSize="16sp"
+                                android:paddingStart="8dp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Card para Viento -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/windCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:layout_columnWeight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_wind"
+                                android:contentDescription="Viento" />
+
+                            <TextView
+                                android:id="@+id/windText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Viento: 0 m/s"
+                                android:textSize="16sp"
+                                android:paddingStart="8dp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Card para Nubosidad -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cloudCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
+                        app:layout_columnWeight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_cloud"
+                                android:contentDescription="Nubosidad" />
+
+                            <TextView
+                                android:id="@+id/cloudText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Nubosidad: 0%"
+                                android:textSize="16sp"
+                                android:paddingStart="8dp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.gridlayout.widget.GridLayout>
+
             </LinearLayout>
 
-            <!-- Humedad -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="8dp">
+        </ScrollView>
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_wind"
-                    android:contentDescription="Humedad" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                <TextView
-                    android:id="@+id/humidityText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Humedad: 0%"
-                    android:textSize="16sp"
-                    android:paddingStart="8dp" />
-            </LinearLayout>
-
-            <!-- Presión -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_wind"
-                    android:contentDescription="Presión" />
-
-                <TextView
-                    android:id="@+id/pressureText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Presión: 0 hPa"
-                    android:textSize="16sp"
-                    android:paddingStart="8dp" />
-            </LinearLayout>
-
-            <!-- Viento -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_wind"
-                    android:contentDescription="Viento" />
-
-                <TextView
-                    android:id="@+id/windText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Viento: 0 m/s"
-                    android:textSize="16sp"
-                    android:paddingStart="8dp" />
-            </LinearLayout>
-
-            <!-- Nubosidad -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_cloud"
-                    android:contentDescription="Nubosidad" />
-
-                <TextView
-                    android:id="@+id/cloudText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nubosidad: 0%"
-                    android:textSize="16sp"
-                    android:paddingStart="8dp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Imagen del meteograma -->
-        <ImageView
-            android:id="@+id/meteogramImageView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="Gráfico del clima"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
-    </LinearLayout>
-</ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
