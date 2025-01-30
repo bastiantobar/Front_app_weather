@@ -57,6 +57,9 @@ public class MenuActivity extends AppCompatActivity {
                 selectedFragment = new MapFragment();
             } else if (itemId == R.id.nav_settings) {
                 selectedFragment = new HistoryFragment();
+            }else if (itemId == R.id.action_logout) {
+                cerrarSesion();
+                return true;
             }
 
             if (selectedFragment != null) {
@@ -67,6 +70,17 @@ public class MenuActivity extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    // Método para cerrar sesión
+    private void cerrarSesion() {
+        Toast.makeText(this, "Cerrando sesión...", Toast.LENGTH_SHORT).show();
+
+        // Redirigir al LoginActivity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Cerrar esta actividad
     }
 
     @Override
