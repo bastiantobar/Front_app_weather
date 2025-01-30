@@ -1,4 +1,4 @@
-package com.example.frontweatherapp.api.models;
+package com.example.frontweatherapp.models.models;
 
 public class InstantWeather {
     private double airTemperature;

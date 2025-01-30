@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.caverock.androidsvg.SVG;
 import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.api.service.WeatherApiService;
-import com.example.frontweatherapp.api.models.InstantWeather;
+import com.example.frontweatherapp.models.models.InstantWeather;
 import com.example.frontweatherapp.network.RetrofitClient;
 
 import java.io.InputStream;

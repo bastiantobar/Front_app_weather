@@ -6,20 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.api.service.WeatherApiService;
-import com.example.frontweatherapp.api.models.WeatherData;
+import com.example.frontweatherapp.models.models.WeatherData;
 import com.example.frontweatherapp.network.RetrofitClient;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -79,6 +76,7 @@ public class HistoryFragment extends Fragment {
 
                     // Actualizamos el gráfico con los datos de temperatura
                     updateChart(lineChart, forecasts);
+                    updateCards(forecasts);
                 } else {
                     Toast.makeText(getContext(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
                 }
@@ -132,12 +130,27 @@ public class HistoryFragment extends Fragment {
         lineChart.setScaleEnabled(true); // Habilitar el zoom
 
         // Configuración de los ejes X para mostrar las horas
+
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 WeatherData data = forecasts.get((int) value); // Usamos el índice para obtener el tiempo
-                return data.getTime(); // Devolver el tiempo en formato adecuado
+
+                // Formato original de la fecha
+                String time = data.getTime(); // "2025-01-28T12:00:00Z"
+
+                // Convertir la fecha a formato dd/MM
+                try {
+                    SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+                    Date date = originalFormat.parse(time);  // Convertimos la cadena a un objeto Date
+
+                    SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM", Locale.getDefault()); // Formato deseado
+                    return targetFormat.format(date);  // Convertimos la fecha al nuevo formato
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "";  // En caso de error, retornar vacío
+                }
             }
         });
 
@@ -153,6 +166,46 @@ public class HistoryFragment extends Fragment {
     }
 
 
+    private void updateCards(List<WeatherData> forecasts) {
+        // Variables para almacenar los valores máximos y mínimos
+        double maxTemp = Double.MIN_VALUE;
+        double minTemp = Double.MAX_VALUE;
+        double maxWindSpeed = Double.MIN_VALUE;
+        double minWindSpeed = Double.MAX_VALUE;
+        double maxPrecipitation = Double.MIN_VALUE;
+        double minPrecipitation = Double.MAX_VALUE;
+
+        // Iterar sobre los datos de los pronósticos
+        for (WeatherData data : forecasts) {
+            // Calcular las temperaturas máximas y mínimas
+            maxTemp = Math.max(maxTemp, data.getAirTemperature());
+            minTemp = Math.min(minTemp, data.getAirTemperature());
+
+            // Calcular las velocidades máximas y mínimas del viento
+            maxWindSpeed = Math.max(maxWindSpeed, data.getWindSpeed());
+            minWindSpeed = Math.min(minWindSpeed, data.getWindSpeed());
+
+            // Calcular las precipitaciones máximas y mínimas
+            maxPrecipitation = Math.max(maxPrecipitation, data.getPrecipitationAmount());
+            minPrecipitation = Math.min(minPrecipitation, data.getPrecipitationAmount());
+        }
+
+        // Actualizar los valores de las tarjetas con los datos calculados
+        TextView maxTempValue = getView().findViewById(R.id.maxTempValue);
+        TextView minTempValue = getView().findViewById(R.id.minTempValue);
+        TextView maxWindSpeedValue = getView().findViewById(R.id.maxWindSpeedValue);
+        TextView minWindSpeedValue = getView().findViewById(R.id.minWindSpeedValue);
+        TextView maxPrecipitationValue = getView().findViewById(R.id.maxPrecipitationValue);
+        TextView minPrecipitationValue = getView().findViewById(R.id.minPrecipitationValue);
+
+        // Mostrar los valores en las tarjetas
+        maxTempValue.setText(String.format("%.1f°C", maxTemp));
+        minTempValue.setText(String.format("%.1f°C", minTemp));
+        maxWindSpeedValue.setText(String.format("%.1f km/h", maxWindSpeed));
+        minWindSpeedValue.setText(String.format("%.1f km/h", minWindSpeed));
+        maxPrecipitationValue.setText(String.format("%.1f mm", maxPrecipitation));
+        minPrecipitationValue.setText(String.format("%.1f mm", minPrecipitation));
+    }
 
 
 }

@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.frontweatherapp.R;
-import com.example.frontweatherapp.api.models.RegisterRequest;
+import com.example.frontweatherapp.models.models.RegisterRequest;
 import com.example.frontweatherapp.api.service.AuthApiService;
 
 import com.example.frontweatherapp.network.RetrofitClient;
