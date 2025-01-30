@@ -2,6 +2,7 @@ package com.example.frontweatherapp.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -124,20 +125,41 @@ public class HomeFragment extends Fragment {
 
                     // Actualizar UI en el hilo principal
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        tempText.setText(String.format("Temperatura: %.1f°C", weather.getAirTemperature()));
+                        float temperature = (float) weather.getAirTemperature();
+                        tempText.setText(String.format("Temperatura: %.1f°C", temperature));
+                        currentTempLarge.setText(String.format(" %.1f°C", temperature));
                         humidityText.setText(String.format("Humedad: %.1f%%", weather.getRelativeHumidity()));
                         pressureText.setText(String.format("Presión: %.1f hPa", weather.getAirPressureAtSeaLevel()));
                         windText.setText(String.format("Viento: %.1f m/s", weather.getWindSpeed()));
                         cloudText.setText(String.format("Nubosidad: %.1f%%", weather.getCloudAreaFraction()));
 
-                        tempText.setVisibility(View.VISIBLE);
+                        // Lógica para cambiar el color según la temperatura
+                        if (temperature < 10) {
+                            // Temperaturas bajas (azul)
+                            tempText.setTextColor(Color.BLUE);
+                            currentTempLarge.setTextColor(Color.BLUE);
+                            tempText.setBackgroundColor(Color.parseColor("#80C9FF")); // Color azul claro de fondo
+                        } else if (temperature >= 10 && temperature <= 25) {
+                            // Temperaturas moderadas (verde)
+                            tempText.setTextColor(Color.GREEN);
+                            currentTempLarge.setTextColor(Color.GREEN);
+                            tempText.setBackgroundColor(Color.parseColor("#C1E1C1")); // Color verde claro de fondo
+                        } else {
+                            // Temperaturas altas (rojo)
+                            tempText.setTextColor(Color.RED);
+                            currentTempLarge.setTextColor(Color.RED);
+                            tempText.setBackgroundColor(Color.parseColor("#FFCCCB")); // Color rojo claro de fondo
+                        }
+
                         humidityText.setVisibility(View.VISIBLE);
                         pressureText.setVisibility(View.VISIBLE);
                         windText.setVisibility(View.VISIBLE);
                         cloudText.setVisibility(View.VISIBLE);
+                        tempText.setVisibility(View.VISIBLE);
 
                         Log.d(TAG, "Datos actualizados en UI correctamente");
                     });
+
 
                     long currentTime = System.currentTimeMillis();
                     lastUpdatedText.setText("Última actualización: " + new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date(currentTime)));

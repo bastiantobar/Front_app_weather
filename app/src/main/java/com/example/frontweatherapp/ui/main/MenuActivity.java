@@ -1,29 +1,43 @@
-package com.example.frontweatherapp.ui.mainmenu;
+package com.example.frontweatherapp.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-
 import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.ui.fragments.HomeFragment;
 import com.example.frontweatherapp.ui.fragments.MapFragment;
 import com.example.frontweatherapp.ui.fragments.HistoryFragment;
-import com.example.frontweatherapp.ui.login.MainActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 
-public class MainMenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
+
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        // Inicializar DrawerLayout y NavigationView
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        // Configurar la Toolbar
+        setSupportActionBar(findViewById(R.id.toolbar));
+
+        // Configurar el DrawerToggle (icono para abrir/cerrar el drawer)
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, findViewById(R.id.toolbar),
+                R.string.open_drawer, R.string.close_drawer);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
         // Cargar el fragmento inicial (HomeFragment)
         if (savedInstanceState == null) {
@@ -33,7 +47,7 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
         // Configurar la navegación entre fragmentos
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+        navigationView.setNavigationItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int itemId = item.getItemId();
 
@@ -49,21 +63,15 @@ public class MainMenuActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.nav_host_fragment, selectedFragment)
                         .commit();
+                drawerLayout.closeDrawer(navigationView); // Cerrar el drawer después de seleccionar un fragmento
             }
             return true;
         });
-        setSupportActionBar(findViewById(R.id.toolbar));
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflar el menú para mostrar el botón de logout
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Manejar clics en el menú
+        // Manejar clics en el menú de la toolbar (como el logout)
         if (item.getItemId() == R.id.action_logout) {
             Toast.makeText(this, "Cerrando sesión...", Toast.LENGTH_SHORT).show();
 

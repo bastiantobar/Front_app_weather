@@ -25,7 +25,7 @@ import com.example.frontweatherapp.models.models.LoginRequest;
 import com.example.frontweatherapp.models.models.LoginResponse;
 import com.example.frontweatherapp.api.service.AuthApiService;
 import com.example.frontweatherapp.network.RetrofitClient;
-import com.example.frontweatherapp.ui.mainmenu.MainMenuActivity;
+import com.example.frontweatherapp.ui.main.MenuActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -110,7 +110,7 @@ public class LoginFragment extends Fragment {
                             });
 
                     // Navegar a la pantalla principal
-                    Intent intent = new Intent(getContext(), MainMenuActivity.class);
+                    Intent intent = new Intent(getContext(), MenuActivity.class);
                     startActivity(intent);
                     requireActivity().finish();
                 } else {

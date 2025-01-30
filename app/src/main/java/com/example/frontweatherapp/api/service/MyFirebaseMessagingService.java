@@ -16,7 +16,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.frontweatherapp.R;
-import com.example.frontweatherapp.ui.mainmenu.MainMenuActivity; // Cambia a la actividad que deseas abrir
+import com.example.frontweatherapp.ui.main.MenuActivity; // Cambia a la actividad que deseas abrir
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -82,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         // Crear el Intent para abrir MainMenuActivity
-        Intent intent = new Intent(this, MainMenuActivity.class);
+        Intent intent = new Intent(this, MenuActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
