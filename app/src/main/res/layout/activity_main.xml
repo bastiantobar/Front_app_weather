@@ -7,6 +7,18 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.main.MainActivity">
 
+    <!-- Imagen de fondo dinámico -->
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:alpha="0.9"
+        android:src="@drawable/bg_night"/>
+
+    <!-- AppBar con Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,12 +36,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!-- Botón flotante -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 

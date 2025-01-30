@@ -136,19 +136,15 @@ public class HomeFragment extends Fragment {
                         // Lógica para cambiar el color según la temperatura
                         if (temperature < 10) {
                             // Temperaturas bajas (azul)
-                            tempText.setTextColor(Color.BLUE);
+
                             currentTempLarge.setTextColor(Color.BLUE);
-                            tempText.setBackgroundColor(Color.parseColor("#80C9FF")); // Color azul claro de fondo
+
                         } else if (temperature >= 10 && temperature <= 25) {
                             // Temperaturas moderadas (verde)
-                            tempText.setTextColor(Color.GREEN);
                             currentTempLarge.setTextColor(Color.GREEN);
-                            tempText.setBackgroundColor(Color.parseColor("#C1E1C1")); // Color verde claro de fondo
                         } else {
                             // Temperaturas altas (rojo)
-                            tempText.setTextColor(Color.RED);
                             currentTempLarge.setTextColor(Color.RED);
-                            tempText.setBackgroundColor(Color.parseColor("#FFCCCB")); // Color rojo claro de fondo
                         }
 
                         humidityText.setVisibility(View.VISIBLE);

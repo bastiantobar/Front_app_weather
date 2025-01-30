@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -15,6 +16,8 @@ import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.ui.fragments.LoginFragment;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -24,7 +27,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Obtener la referencia del fondo
+        ImageView background = findViewById(R.id.background_image);
 
+        // Obtener la hora actual
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        Log.d("MainActivity", "Hora actual: " + hour);
+
+        // Cambiar fondo según la hora
+        if (hour >= 6 && hour < 18) {  // Día (06:00 - 17:59)
+            background.setImageResource(R.drawable.bg_day);
+        } else {  // Noche (18:00 - 05:59)
+            background.setImageResource(R.drawable.bg_night);
+        }
         // Inicializar el lanzador de solicitud de permisos
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
