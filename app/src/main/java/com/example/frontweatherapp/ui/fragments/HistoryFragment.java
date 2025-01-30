@@ -44,20 +44,16 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Infla el layout para este fragmento
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
 
-        // Inicializar el gráfico
         LineChart lineChart = rootView.findViewById(R.id.lineChart);
 
-        // Llamar a la función para obtener las predicciones horarias
         fetchHourlyForecasts(lineChart);
 
         return rootView;
     }
 
     private void fetchHourlyForecasts(LineChart lineChart) {
-        // Obtener el token desde SharedPreferences
         SharedPreferences preferences = requireContext().getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
         String token = preferences.getString("TOKEN", null);
 
@@ -74,7 +70,6 @@ public class HistoryFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     List<WeatherData> forecasts = response.body();
 
-                    // Actualizamos el gráfico con los datos de temperatura
                     updateChart(lineChart, forecasts);
                     updateCards(forecasts);
                 } else {
@@ -90,78 +85,61 @@ public class HistoryFragment extends Fragment {
     }
 
     private void updateChart(LineChart lineChart, List<WeatherData> forecasts) {
-        // Crear una lista de entradas para el gráfico
         ArrayList<Entry> entries = new ArrayList<>();
 
-        // Variables para almacenar las temperaturas máxima y mínima
         double maxTemp = Double.MIN_VALUE;
         double minTemp = Double.MAX_VALUE;
 
-        // Iterar sobre los datos de los pronósticos
         for (int i = 0; i < forecasts.size(); i++) {
             WeatherData data = forecasts.get(i);
-            entries.add(new Entry(i, (float) data.getAirTemperature())); // Usamos 'i' como eje X y la temperatura como eje Y
+            entries.add(new Entry(i, (float) data.getAirTemperature()));
 
-            // Calcular la temperatura máxima y mínima
             maxTemp = Math.max(maxTemp, data.getAirTemperature());
             minTemp = Math.min(minTemp, data.getAirTemperature());
         }
 
-        // Actualizar los valores de las tarjetas con las temperaturas máxima y mínima
         TextView maxTempValue = getView().findViewById(R.id.maxTempValue);
         TextView minTempValue = getView().findViewById(R.id.minTempValue);
 
-        maxTempValue.setText(String.format("%.1f°C", maxTemp)); // Mostrar la temperatura máxima
-        minTempValue.setText(String.format("%.1f°C", minTemp)); // Mostrar la temperatura mínima
-
-        // Crear un conjunto de datos (LineDataSet)
+        maxTempValue.setText(String.format("%.1f°C", maxTemp));
+        minTempValue.setText(String.format("%.1f°C", minTemp));
         LineDataSet lineDataSet = new LineDataSet(entries, "Temperatura (°C)");
 
-        // Personalizar el color de la línea
         lineDataSet.setColor(getResources().getColor(R.color.colorAccent));
-        lineDataSet.setValueTextColor(getResources().getColor(R.color.light_gray)); // Color de los valores
-
-        // Crear LineData con el conjunto de datos
+        lineDataSet.setValueTextColor(getResources().getColor(R.color.light_gray));
         LineData lineData = new LineData(lineDataSet);
         lineChart.setData(lineData);
 
-        // Configuración de los ejes X y Y para el zoom
-        lineChart.setDragEnabled(true); // Habilitar el desplazamiento (arrastrar)
-        lineChart.setScaleEnabled(true); // Habilitar el zoom
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleEnabled(true);
 
-        // Configuración de los ejes X para mostrar las horas
 
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                WeatherData data = forecasts.get((int) value); // Usamos el índice para obtener el tiempo
+                WeatherData data = forecasts.get((int) value);
 
-                // Formato original de la fecha
-                String time = data.getTime(); // "2025-01-28T12:00:00Z"
+                String time = data.getTime();
 
-                // Convertir la fecha a formato dd/MM
                 try {
                     SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
-                    Date date = originalFormat.parse(time);  // Convertimos la cadena a un objeto Date
+                    Date date = originalFormat.parse(time);
 
-                    SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM", Locale.getDefault()); // Formato deseado
-                    return targetFormat.format(date);  // Convertimos la fecha al nuevo formato
+                    SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM", Locale.getDefault());
+                    return targetFormat.format(date);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return "";  // En caso de error, retornar vacío
+                    return "";
                 }
             }
         });
 
-        // Personalizar el gráfico (opcional)
-        lineChart.getDescription().setEnabled(false); // Deshabilitar la descripción
-        lineChart.animateX(1000); // Animación para el gráfico
+        lineChart.getDescription().setEnabled(false);
+        lineChart.animateX(1000);
 
-        // Habilitar el zoom y desplazamiento en los ejes
-        lineChart.setPinchZoom(true); // Habilitar zoom con pinch (pellizcar)
+        lineChart.setPinchZoom(true);
 
-        // Actualizar el gráfico
         lineChart.invalidate();
     }
 
