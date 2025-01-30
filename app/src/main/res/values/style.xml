@@ -6,4 +6,5 @@
     <style name="BottomNavTextInactive" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
+
 </resources>

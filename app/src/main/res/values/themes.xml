@@ -1,9 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.FrontWeatherApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Colores principales -->
+        <item name="colorPrimary">#0288D1</item>  <!-- Azul Clima -->
+        <item name="colorPrimaryVariant">#0277BD</item> <!-- Azul Oscuro -->
+        <item name="colorSecondary">#03A9F4</item>  <!-- Celeste -->
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+
+        <!-- Fuentes y estilos -->
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+
+        <!-- Aplicar estilos globales -->
+
+    </style>
+    <!-- Botones personalizados -->
+    <style name="WeatherButton" parent="Widget.MaterialComponents.Button">
+
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <!-- EditText personalizados -->
+    <style name="WeatherEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColorHint">#B0BEC5</item> <!-- Gris Claro -->
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
     <style name="Theme.FrontWeatherApp" parent="Base.Theme.FrontWeatherApp" />
 </resources>

@@ -10,5 +10,8 @@
     <color name="coldTemperatureColor">#2196F3</color>
     <color name="colorPrimaryVariant">#FFB300</color>
     <color name="colorSecondary">#0288D1</color>
+    <color name="colorPrimary">#0288D1</color>  <!-- Azul Clima -->
+    <color name="colorBackground">#ECEFF1</color>  <!-- Gris claro -->
+    <color name="colorText">#FFFFFF</color>
     <!-- Azul -->
 </resources>
