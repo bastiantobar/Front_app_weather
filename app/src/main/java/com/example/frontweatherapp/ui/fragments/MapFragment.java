@@ -11,7 +11,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,33 +20,39 @@ import com.example.frontweatherapp.R;
 
 public class MapFragment extends Fragment {
 
-    private static final String TAG = "ProfileFragment";
+    private static final String TAG = "MapFragment";
     private WebView webView;
     private ProgressBar loadingIndicator;
-    private TextView cardInfo1, cardInfo2;
     private LoadingDialogFragment loadingDialog;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        showLoading(true); //
+        showLoading(true);
 
         // Referencias UI
         webView = view.findViewById(R.id.webView);
         loadingIndicator = view.findViewById(R.id.loadingIndicator);
-        cardInfo1 = view.findViewById(R.id.cardInfo1);
-        cardInfo2 = view.findViewById(R.id.cardInfo2);
 
-        // Establecer valores de prueba
-        cardInfo1.setText("Valor 1: 23°C");
-        cardInfo2.setText("Valor 2: 10 km/h");
+        setupWebView();
 
-        // Configuración del WebView
+        return view;
+    }
+
+    private void setupWebView() {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                loadingIndicator.setVisibility(View.GONE);
+                showLoading(false);
+            }
+        });
 
-        // Obtener token
+        // Obtener token desde SharedPreferences
         SharedPreferences preferences = requireActivity().getSharedPreferences("APP_PREFS", getContext().MODE_PRIVATE);
         String token = preferences.getString("TOKEN", null);
 
@@ -58,19 +63,7 @@ public class MapFragment extends Fragment {
             Log.e(TAG, "Token no encontrado en SharedPreferences");
         }
 
-        // Configurar el WebViewClient para ocultar el LoadingDialog al terminar la carga
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                showLoading(false); //
-            }
-        });
-
-        // Cargar el HTML desde assets
         webView.loadUrl("file:///android_asset/windy_map.html");
-
-        return view;
     }
 
     @Override
@@ -100,7 +93,7 @@ public class MapFragment extends Fragment {
             if (loadingDialog == null) {
                 loadingDialog = new LoadingDialogFragment();
             }
-            if (!loadingDialog.isAdded()) { // 👈 Previene múltiples instancias
+            if (!loadingDialog.isAdded()) {
                 loadingDialog.show(getParentFragmentManager(), "loading");
             }
         } else {
@@ -110,4 +103,3 @@ public class MapFragment extends Fragment {
         }
     }
 }
-

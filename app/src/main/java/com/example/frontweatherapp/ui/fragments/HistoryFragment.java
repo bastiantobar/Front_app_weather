@@ -59,15 +59,14 @@ public class HistoryFragment extends Fragment {
 
         meteogramImageView = rootView.findViewById(R.id.meteogramImageView);
 
-      //  LineChart lineChart = rootView.findViewById(R.id.lineChart);
 
-     //   fetchHourlyForecasts(lineChart);
+        fetchHourlyForecasts();
         fetchMeteogram();
 
         return rootView;
     }
 
-    private void fetchHourlyForecasts(LineChart lineChart) {
+    private void fetchHourlyForecasts() {
         SharedPreferences preferences = requireContext().getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
         String token = preferences.getString("TOKEN", null);
 
@@ -83,8 +82,6 @@ public class HistoryFragment extends Fragment {
             public void onResponse(@NonNull Call<List<WeatherData>> call, @NonNull Response<List<WeatherData>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<WeatherData> forecasts = response.body();
-
-                    updateChart(lineChart, forecasts);
                     updateCards(forecasts);
                 } else {
                     Toast.makeText(getContext(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
@@ -98,64 +95,6 @@ public class HistoryFragment extends Fragment {
         });
     }
 
-    private void updateChart(LineChart lineChart, List<WeatherData> forecasts) {
-        ArrayList<Entry> entries = new ArrayList<>();
-
-        double maxTemp = Double.MIN_VALUE;
-        double minTemp = Double.MAX_VALUE;
-
-        for (int i = 0; i < forecasts.size(); i++) {
-            WeatherData data = forecasts.get(i);
-            entries.add(new Entry(i, (float) data.getAirTemperature()));
-
-            maxTemp = Math.max(maxTemp, data.getAirTemperature());
-            minTemp = Math.min(minTemp, data.getAirTemperature());
-        }
-
-        TextView maxTempValue = getView().findViewById(R.id.maxTempValue);
-        TextView minTempValue = getView().findViewById(R.id.minTempValue);
-
-        maxTempValue.setText(String.format("%.1f°C", maxTemp));
-        minTempValue.setText(String.format("%.1f°C", minTemp));
-        LineDataSet lineDataSet = new LineDataSet(entries, "Temperatura (°C)");
-
-        lineDataSet.setColor(getResources().getColor(R.color.colorAccent));
-        lineDataSet.setValueTextColor(getResources().getColor(R.color.light_gray));
-        LineData lineData = new LineData(lineDataSet);
-        lineChart.setData(lineData);
-
-        lineChart.setDragEnabled(true);
-        lineChart.setScaleEnabled(true);
-
-
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                WeatherData data = forecasts.get((int) value);
-
-                String time = data.getTime();
-
-                try {
-                    SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
-                    Date date = originalFormat.parse(time);
-
-                    SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM", Locale.getDefault());
-                    return targetFormat.format(date);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return "";
-                }
-            }
-        });
-
-        lineChart.getDescription().setEnabled(false);
-        lineChart.animateX(1000);
-
-        lineChart.setPinchZoom(true);
-
-        lineChart.invalidate();
-    }
 
     private void updateCards(List<WeatherData> forecasts) {
         // Variables para almacenar los valores máximos y mínimos
