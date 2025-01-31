@@ -157,7 +157,6 @@ public class HistoryFragment extends Fragment {
         lineChart.invalidate();
     }
 
-
     private void updateCards(List<WeatherData> forecasts) {
         // Variables para almacenar los valores máximos y mínimos
         double maxTemp = Double.MIN_VALUE;
@@ -232,11 +231,13 @@ public class HistoryFragment extends Fragment {
             }
         });
     }
+
     private void showToast(String message) {
         if (getActivity() != null) {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
+
     public void showLoading(boolean show) {
         if (show) {
             if (loadingDialog == null) {

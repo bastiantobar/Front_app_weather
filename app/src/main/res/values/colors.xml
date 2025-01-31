@@ -14,5 +14,30 @@
     <color name="colorPrimary">#0288D1</color>  <!-- Azul Clima -->
     <color name="colorBackground">#ECEFF1</color>  <!-- Gris claro -->
     <color name="colorText">#FFFFFF</color>
+
+    <!-- 🎨 Colores Primarios -->
+    <color name="md_theme_primary">#6200EE</color> <!-- Morado Material -->
+    <color name="md_theme_primaryVariant">#3700B3</color>
+    <color name="md_theme_secondary">#03DAC6</color> <!-- Turquesa Material -->
+
+    <!-- 🌤️ Clima -->
+    <color name="color_sun">#FFD54F</color> <!-- Amarillo Sol -->
+    <color name="color_moon">#90A4AE</color> <!-- Gris Luna -->
+    <color name="color_cloud">#B0BEC5</color> <!-- Azul Nubosidad -->
+    <color name="color_wind">#64B5F6</color> <!-- Azul Viento -->
+
+    <!-- 🔥 Temperaturas -->
+    <color name="color_hot">#E53935</color> <!-- Rojo para Calor -->
+    <color name="color_moderate">#4CAF50</color> <!-- Verde Moderado -->
+    <color name="color_cold">#1E88E5</color> <!-- Azul Frío -->
+
+    <!-- 🖌️ Neutrales -->
+    <color name="md_theme_background">#FFFFFF</color> <!-- Fondo Claro -->
+    <color name="md_theme_outline">#DADADA</color> <!-- Bordes -->
+    <color name="text_primary">#333333</color> <!-- Texto Principal -->
+    <color name="text_secondary">#757575</color> <!-- Texto Secundario -->
     <!-- Azul -->
+
+
+
 </resources>

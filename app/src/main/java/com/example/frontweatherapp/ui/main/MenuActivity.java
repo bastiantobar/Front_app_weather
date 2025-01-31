@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import com.example.frontweatherapp.R;
+import com.example.frontweatherapp.ui.fragments.GraficFragment;
 import com.example.frontweatherapp.ui.fragments.HomeFragment;
 import com.example.frontweatherapp.ui.fragments.MapFragment;
 import com.example.frontweatherapp.ui.fragments.HistoryFragment;
@@ -67,6 +68,8 @@ public class MenuActivity extends AppCompatActivity {
                 selectedFragment = new MapFragment();
             } else if (itemId == R.id.nav_settings) {
                 selectedFragment = new HistoryFragment();
+            } else if (itemId == R.id.nav_graficos) {
+                selectedFragment = new GraficFragment();
             }else if (itemId == R.id.action_logout) {
                 cerrarSesion();
                 return true;

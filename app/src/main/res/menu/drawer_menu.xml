@@ -15,6 +15,10 @@
         android:icon="@drawable/ic_history"
         android:title="Pronóstico" />
     <item
+        android:id="@+id/nav_graficos"
+        android:icon="@drawable/ic_chart"
+        android:title="Gráficos" />
+    <item
         android:id="@+id/action_logout"
         android:icon="@drawable/ic_logout"
         android:title="Cerrar Sesión"
