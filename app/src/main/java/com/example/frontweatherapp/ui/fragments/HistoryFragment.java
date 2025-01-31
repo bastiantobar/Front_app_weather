@@ -48,11 +48,13 @@ public class HistoryFragment extends Fragment {
 
     private ProgressBar progressBar;
     private ImageView meteogramImageView;
+    private LoadingDialogFragment loadingDialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        showLoading(true);
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
 
         meteogramImageView = rootView.findViewById(R.id.meteogramImageView);
@@ -194,6 +196,7 @@ public class HistoryFragment extends Fragment {
         minWindSpeedValue.setText(String.format("%.1f km/h", minWindSpeed));
         maxPrecipitationValue.setText(String.format("%.1f mm", maxPrecipitation));
         minPrecipitationValue.setText(String.format("%.1f mm", minPrecipitation));
+        showLoading(false);
     }
 
     private void fetchMeteogram() {
@@ -230,6 +233,18 @@ public class HistoryFragment extends Fragment {
     private void showToast(String message) {
         if (getActivity() != null) {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void showLoading(boolean show) {
+        if (show) {
+            if (loadingDialog == null) {
+                loadingDialog = new LoadingDialogFragment();
+            }
+            loadingDialog.show(getParentFragmentManager(), "loading"); // 🔥 Cambio aquí
+        } else {
+            if (loadingDialog != null) {
+                loadingDialog.dismiss();
+            }
         }
     }
 }

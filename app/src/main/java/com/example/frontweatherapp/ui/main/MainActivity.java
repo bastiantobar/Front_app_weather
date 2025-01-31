@@ -27,19 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Obtener la referencia del fondo
-        ImageView background = findViewById(R.id.background_image);
-
-        // Obtener la hora actual
-        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        Log.d("MainActivity", "Hora actual: " + hour);
-
-        // Cambiar fondo según la hora
-        if (hour >= 6 && hour < 18) {  // Día (06:00 - 17:59)
-            background.setImageResource(R.drawable.bg_day);
-        } else {  // Noche (18:00 - 05:59)
-            background.setImageResource(R.drawable.bg_night);
-        }
         // Inicializar el lanzador de solicitud de permisos
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),

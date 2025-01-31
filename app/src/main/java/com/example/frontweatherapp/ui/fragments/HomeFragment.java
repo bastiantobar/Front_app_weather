@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -32,7 +33,7 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
     private static final int UPDATE_INTERVAL = 10 * 1000; // 10 segundos
-
+    private LoadingDialogFragment loadingDialog;
     private TextView tempText, humidityText, pressureText, windText, cloudText, lastUpdatedText, currentTempLarge;
     private ImageView weatherIcon;
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -43,7 +44,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
+        showLoading(true);
         // Inicializar vistas
         tempText = rootView.findViewById(R.id.tempText);
         humidityText = rootView.findViewById(R.id.humidityText);
@@ -152,6 +153,7 @@ public class HomeFragment extends Fragment {
                         windText.setVisibility(View.VISIBLE);
                         cloudText.setVisibility(View.VISIBLE);
                         tempText.setVisibility(View.VISIBLE);
+                        showLoading(false);
 
                         Log.d(TAG, "Datos actualizados en UI correctamente");
                     });
@@ -196,4 +198,17 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         handler.removeCallbacksAndMessages(null);
     }
+    public void showLoading(boolean show) {
+        if (show) {
+            if (loadingDialog == null) {
+                loadingDialog = new LoadingDialogFragment();
+            }
+            loadingDialog.show(getParentFragmentManager(), "loading"); // 🔥 Cambio aquí
+        } else {
+            if (loadingDialog != null) {
+                loadingDialog.dismiss();
+            }
+        }
+    }
+
 }
