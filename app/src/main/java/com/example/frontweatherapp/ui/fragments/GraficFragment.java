@@ -206,7 +206,7 @@ public class GraficFragment extends Fragment {
             if (loadingDialog == null) {
                 loadingDialog = new LoadingDialogFragment();
             }
-            loadingDialog.show(getParentFragmentManager(), "loading"); 
+            loadingDialog.show(getParentFragmentManager(), "loading");
         } else {
             if (loadingDialog != null) {
                 loadingDialog.dismiss();

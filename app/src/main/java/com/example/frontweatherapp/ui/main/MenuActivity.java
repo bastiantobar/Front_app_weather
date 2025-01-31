@@ -14,6 +14,7 @@ import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.ui.fragments.GraficFragment;
 import com.example.frontweatherapp.ui.fragments.HomeFragment;
 import com.example.frontweatherapp.ui.fragments.MapFragment;
+import com.example.frontweatherapp.ui.fragments.NotificationFragment;
 import com.example.frontweatherapp.ui.fragments.HistoryFragment;
 import com.google.android.material.navigation.NavigationView;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -70,10 +71,14 @@ public class MenuActivity extends AppCompatActivity {
                 selectedFragment = new HistoryFragment();
             } else if (itemId == R.id.nav_graficos) {
                 selectedFragment = new GraficFragment();
+            }else if (itemId == R.id.nav_notifications) {
+                selectedFragment = new NotificationFragment();
             }else if (itemId == R.id.action_logout) {
                 cerrarSesion();
                 return true;
             }
+
+
 
             if (selectedFragment != null) {
                 getSupportFragmentManager().beginTransaction()

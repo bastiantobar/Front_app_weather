@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp">
+
+        <!-- Ícono de Notificación -->
+        <ImageView
+            android:id="@+id/iconNotification"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_notifications_active"
+            android:tint="@color/colorPrimary"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/titleNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔔 Configuración de Notificaciones"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_gravity="center"
+            android:paddingBottom="6dp" />
+
+        <!-- Subtítulo -->
+        <TextView
+            android:id="@+id/descriptionNotification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Activa esta opción para recibir alertas meteorológicas en tiempo real, incluyendo cambios bruscos de clima y avisos importantes."
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:gravity="center"
+            android:paddingBottom="16dp"
+            android:lineSpacingExtra="2dp"/>
+
+        <!-- Card con el Switch -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            android:padding="16dp"
+            app:strokeColor="@color/md_theme_outline"
+            app:strokeWidth="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/notificationStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Notificaciones desactivadas"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary" />
+
+                <Switch
+                    android:id="@+id/switchNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:thumbTint="@color/colorAccent"
+                    android:trackTint="@color/light_gray"
+                    android:animateLayoutChanges="true"/>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</ScrollView>

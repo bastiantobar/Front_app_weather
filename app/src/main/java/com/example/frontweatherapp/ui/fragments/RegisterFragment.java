@@ -5,8 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,8 +14,10 @@ import androidx.fragment.app.Fragment;
 import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.models.models.RegisterRequest;
 import com.example.frontweatherapp.api.service.AuthApiService;
-
 import com.example.frontweatherapp.network.RetrofitClient;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +26,8 @@ import retrofit2.Response;
 public class RegisterFragment extends Fragment {
 
     private AuthApiService authApiService;
+    private TextInputEditText emailEditText, passwordEditText;
+    private TextInputLayout emailLayout, passwordLayout;
 
     @Nullable
     @Override
@@ -36,18 +38,19 @@ public class RegisterFragment extends Fragment {
         authApiService = RetrofitClient.getInstance(requireContext()).create(AuthApiService.class);
 
         // Configurar vistas
-        EditText emailEditText = view.findViewById(R.id.emailEditText);
-        EditText passwordEditText = view.findViewById(R.id.passwordEditText);
-        Button registerButton = view.findViewById(R.id.registerButton);
-        Button backToLoginButton = view.findViewById(R.id.backToLoginButton);
+        emailEditText = view.findViewById(R.id.editTextEmail);
+        passwordEditText = view.findViewById(R.id.editTextPassword);
+        emailLayout = view.findViewById(R.id.textInputEmail);
+        passwordLayout = view.findViewById(R.id.textInputPassword);
+        MaterialButton registerButton = view.findViewById(R.id.button_register);
+        MaterialButton backToLoginButton = view.findViewById(R.id.button_backToLogin);
 
         // Lógica para el botón de registro
         registerButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
-            if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                Toast.makeText(getContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+            if (!validateInputs(email, password)) {
                 return;
             }
 
@@ -62,6 +65,29 @@ public class RegisterFragment extends Fragment {
         return view;
     }
 
+    private boolean validateInputs(String email, String password) {
+        boolean isValid = true;
+
+        if (TextUtils.isEmpty(email)) {
+            emailLayout.setError("El email es obligatorio");
+            isValid = false;
+        } else {
+            emailLayout.setError(null);
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            passwordLayout.setError("La contraseña es obligatoria");
+            isValid = false;
+        } else if (password.length() < 6) {
+            passwordLayout.setError("Debe tener al menos 6 caracteres");
+            isValid = false;
+        } else {
+            passwordLayout.setError(null);
+        }
+
+        return isValid;
+    }
+
     private void performRegister(String email, String password) {
         RegisterRequest request = new RegisterRequest(email, password);
 
@@ -70,11 +96,7 @@ public class RegisterFragment extends Fragment {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
-                    // Reemplazar el fragmento actual con el HomeFragment
-                    requireActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new HomeFragment()) // Cargar HomeFragment
-                            .commit();
+                    navigateToHome();
                 } else {
                     Toast.makeText(getContext(), "Error en el registro", Toast.LENGTH_SHORT).show();
                 }
@@ -85,5 +107,12 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void navigateToHome() {
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new HomeFragment())
+                .commit();
     }
 }

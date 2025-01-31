@@ -19,6 +19,11 @@
         android:icon="@drawable/ic_chart"
         android:title="Gráficos" />
     <item
+        android:id="@+id/nav_notifications"
+        android:icon="@drawable/ic_notifications"
+        android:title="Notificaciones" />
+
+    <item
         android:id="@+id/action_logout"
         android:icon="@drawable/ic_logout"
         android:title="Cerrar Sesión"
