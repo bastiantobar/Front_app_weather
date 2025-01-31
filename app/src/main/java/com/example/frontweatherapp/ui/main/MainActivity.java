@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Inicializar el lanzador de solicitud de permisos
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 isGranted -> {
@@ -40,10 +39,8 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        // Verificar y solicitar el permiso de notificaciones si es necesario
         checkAndRequestNotificationPermission();
 
-        // Cargar el LoginFragment al iniciar
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -63,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 subscribeToWeatherAlerts();
             }
         } else {
-            // Si el sistema es menor a Android 13, no es necesario solicitar permiso
             subscribeToWeatherAlerts();
         }
     }

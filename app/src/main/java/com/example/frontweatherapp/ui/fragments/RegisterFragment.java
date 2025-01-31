@@ -34,10 +34,8 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        // Configurar Retrofit
         authApiService = RetrofitClient.getInstance(requireContext()).create(AuthApiService.class);
 
-        // Configurar vistas
         emailEditText = view.findViewById(R.id.editTextEmail);
         passwordEditText = view.findViewById(R.id.editTextPassword);
         emailLayout = view.findViewById(R.id.textInputEmail);
@@ -45,7 +43,6 @@ public class RegisterFragment extends Fragment {
         MaterialButton registerButton = view.findViewById(R.id.button_register);
         MaterialButton backToLoginButton = view.findViewById(R.id.button_backToLogin);
 
-        // Lógica para el botón de registro
         registerButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
@@ -57,7 +54,6 @@ public class RegisterFragment extends Fragment {
             performRegister(email, password);
         });
 
-        // Lógica para el botón de volver al login
         backToLoginButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });

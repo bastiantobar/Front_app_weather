@@ -46,23 +46,23 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_main, container, false);
 
-        // Configurar Retrofit
+
         authApiService = RetrofitClient.getInstance(requireContext()).create(AuthApiService.class);
 
-        // Configurar vistas
+
         EditText emailEditText = view.findViewById(R.id.editTextEmail);
         EditText passwordEditText = view.findViewById(R.id.editTextPassword);
         Button loginButton = view.findViewById(R.id.button_login);
         Button registerButton = view.findViewById(R.id.button_register);
 
-        // Configurar acción para Login
+
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
             performLogin(email, password);
         });
 
-        // Configurar acción para ir al RegisterFragment
+
         registerButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
@@ -128,11 +128,10 @@ public class LoginFragment extends Fragment {
     }
 
     private void sendFcmTokenToBackend(String authToken, String fcmToken) {
-        // Crear el cuerpo de la solicitud
+
         Map<String, String> body = new HashMap<>();
         body.put("fcmToken", fcmToken);
 
-        // Llamar al servicio
         authApiService.updateFcmToken(authToken, body).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

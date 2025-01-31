@@ -164,13 +164,13 @@ public class GraficFragment extends Fragment {
         float despejado = 0;
 
         for (WeatherData data : forecasts) {
-            float cloudiness = (float) data.getPrecipitationAmount(); // 🌧️ Cambio: Usar precipitación en mm
+            float cloudiness = (float) data.getPrecipitationAmount(); //
 
-            if (cloudiness > 5) { // Mucha lluvia
+            if (cloudiness > 5) {
                 lluvia++;
-            } else if (cloudiness > 1) { // Ligeramente nublado
+            } else if (cloudiness > 1) {
                 nublado++;
-            } else { // Soleado
+            } else {
                 despejado++;
             }
         }

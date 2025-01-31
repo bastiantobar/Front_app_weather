@@ -63,7 +63,7 @@ public class NotificationFragment extends Fragment {
             iconNotification.setColorFilter(getResources().getColor(R.color.color_cold));
         }
 
-        // Animación suave en el Switch
+
         switchNotification.animate().scaleX(1.1f).scaleY(1.1f).setDuration(150)
                 .withEndAction(() -> switchNotification.animate().scaleX(1f).scaleY(1f).setDuration(150))
                 .start();

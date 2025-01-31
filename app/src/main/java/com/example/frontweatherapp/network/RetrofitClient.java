@@ -13,17 +13,14 @@ public class RetrofitClient {
 
     public static Retrofit getInstance(Context context) {
         if (retrofit == null) {
-            // Interceptor de logging para ver las solicitudes y respuestas HTTP
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            // Cliente HTTP con los interceptores
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(loggingInterceptor) // Interceptor de logs
                     .addInterceptor(new AuthInterceptor(context)) // Interceptor de autenticación
                     .build();
 
-            // Crear instancia de Retrofit
             retrofit = new Retrofit.Builder()
                     .baseUrl("http://10.0.2.2:8080/") // Cambia si usas otra IP
                     .client(client)

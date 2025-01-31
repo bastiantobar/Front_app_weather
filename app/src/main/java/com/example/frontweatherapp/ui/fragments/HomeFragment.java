@@ -57,7 +57,6 @@ public class HomeFragment extends Fragment {
 
         Log.d(TAG, "Vistas inicializadas correctamente");
 
-        // Verificar si las vistas están correctamente asignadas
         checkViewsInitialized();
 
         swipeRefreshLayout.setOnRefreshListener(this::fetchInstantWeather);
@@ -90,7 +89,6 @@ public class HomeFragment extends Fragment {
                 .getString("TOKEN", null);
 
         if (token == null || token.isEmpty()) {
-            //showToast("Error: no hay token disponible.");
             Log.e(TAG, "Token no disponible");
             return;
         }
@@ -107,21 +105,14 @@ public class HomeFragment extends Fragment {
                     InstantWeather weather = response.body();
                     Log.d(TAG, "Respuesta exitosa. Datos recibidos: " + weather.toString());
 
-                    // Verificar si el fragmento sigue adjunto antes de actualizar la UI
                     if (!isAdded() || getView() == null) {
                         Log.e(TAG, "El fragmento ya no está adjunto. No se puede actualizar la UI.");
                         return;
                     }
-
-                    // Verificar si los valores no son nulos antes de actualizar la UI
-
-
                     Log.d(TAG, "weather.getAirTemperature(): " + weather.getAirTemperature());
                     Log.d(TAG, "weather.getRelativeHumidity(): " + weather.getRelativeHumidity());
                     Log.d(TAG, "weather.getAirPressureAtSeaLevel(): " + weather.getAirPressureAtSeaLevel());
                     Log.d(TAG, "weather.getWindSpeed(): " + weather.getWindSpeed());
-
-                    // Actualizar UI en el hilo principal
                     new Handler(Looper.getMainLooper()).post(() -> {
                         float temperature = (float) weather.getAirTemperature();
                         tempText.setText(String.format("Temperatura: %.1f°C", temperature));
@@ -132,13 +123,13 @@ public class HomeFragment extends Fragment {
                         cloudText.setText(String.format("Nubosidad: %.1f%%", weather.getCloudAreaFraction()));
 
                         Calendar calendar = Calendar.getInstance();
-                        int hour = calendar.get(Calendar.HOUR_OF_DAY); // Obtiene la hora actual en formato 24h
+                        int hour = calendar.get(Calendar.HOUR_OF_DAY);
                         if (hour >= 6 && hour < 18) {
                             weatherIcon.setImageResource(R.drawable.ic_sun);
-                            weatherIcon.setColorFilter(Color.YELLOW);  // 🔥 Aplica un filtro de color para que se vea mejor
+                            weatherIcon.setColorFilter(Color.YELLOW);
                         } else {
                             weatherIcon.setImageResource(R.drawable.ic_moon);
-                            weatherIcon.setColorFilter(Color.CYAN);  // 🔥 Color azul claro para la luna
+                            weatherIcon.setColorFilter(Color.CYAN);
                         }
 
                         if (temperature < 10) {

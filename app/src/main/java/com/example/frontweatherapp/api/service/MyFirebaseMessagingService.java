@@ -28,7 +28,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        // Log para depuración
         Log.d(TAG, "Mensaje recibido de: " + remoteMessage.getFrom());
 
         if (remoteMessage.getData().size() > 0) {
