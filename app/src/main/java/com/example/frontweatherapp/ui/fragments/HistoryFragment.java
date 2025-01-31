@@ -59,9 +59,10 @@ public class HistoryFragment extends Fragment {
 
         meteogramImageView = rootView.findViewById(R.id.meteogramImageView);
 
-        LineChart lineChart = rootView.findViewById(R.id.lineChart);
+      //  LineChart lineChart = rootView.findViewById(R.id.lineChart);
 
-        fetchHourlyForecasts(lineChart);
+     //   fetchHourlyForecasts(lineChart);
+        fetchMeteogram();
 
         return rootView;
     }
@@ -196,7 +197,7 @@ public class HistoryFragment extends Fragment {
         minWindSpeedValue.setText(String.format("%.1f km/h", minWindSpeed));
         maxPrecipitationValue.setText(String.format("%.1f mm", maxPrecipitation));
         minPrecipitationValue.setText(String.format("%.1f mm", minPrecipitation));
-        showLoading(false);
+
     }
 
     private void fetchMeteogram() {
@@ -212,6 +213,7 @@ public class HistoryFragment extends Fragment {
                         SVG svg = SVG.getFromInputStream(inputStream);
                         PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
                         meteogramImageView.setImageDrawable(drawable);
+                        showLoading(false);
                     } catch (Exception e) {
                         Log.e(TAG, "Error al procesar el SVG.", e);
                         showToast("Error al mostrar el gráfico.");

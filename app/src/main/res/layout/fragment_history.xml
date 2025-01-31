@@ -3,14 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/meteogramImageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="Gráfico del clima"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,14 +16,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <!-- LineChart -->
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/lineChart"
+                <ImageView
+                    android:id="@+id/meteogramImageView"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="3dp" />
+                    android:layout_height="200dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="Gráfico del clima"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true" />
             </RelativeLayout>
 
 
