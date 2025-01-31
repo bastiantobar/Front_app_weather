@@ -24,7 +24,7 @@ import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.api.service.WeatherApiService;
 import com.example.frontweatherapp.models.models.InstantWeather;
 import com.example.frontweatherapp.network.RetrofitClient;
-
+import android.icu.util.Calendar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,7 +37,6 @@ public class HomeFragment extends Fragment {
     private TextView tempText, humidityText, pressureText, windText, cloudText, lastUpdatedText, currentTempLarge;
     private ImageView weatherIcon;
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private int pendingRequests = 0;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
@@ -83,8 +82,7 @@ public class HomeFragment extends Fragment {
     private void fetchInstantWeather() {
         Log.d(TAG, "Método fetchInstantWeather() iniciado");
 
-        incrementPendingRequests();
-        Log.d(TAG, "incrementPendingRequests() ejecutado");
+
 
         WeatherApiService apiService = RetrofitClient.getInstance(requireContext()).create(WeatherApiService.class);
         String token = requireContext()
@@ -92,7 +90,6 @@ public class HomeFragment extends Fragment {
                 .getString("TOKEN", null);
 
         if (token == null || token.isEmpty()) {
-            decrementPendingRequests();
             //showToast("Error: no hay token disponible.");
             Log.e(TAG, "Token no disponible");
             return;
@@ -134,17 +131,21 @@ public class HomeFragment extends Fragment {
                         windText.setText(String.format("Viento: %.1f m/s", weather.getWindSpeed()));
                         cloudText.setText(String.format("Nubosidad: %.1f%%", weather.getCloudAreaFraction()));
 
-                        // Lógica para cambiar el color según la temperatura
+                        Calendar calendar = Calendar.getInstance();
+                        int hour = calendar.get(Calendar.HOUR_OF_DAY); // Obtiene la hora actual en formato 24h
+                        if (hour >= 6 && hour < 18) {
+                            weatherIcon.setImageResource(R.drawable.ic_sun);
+                            weatherIcon.setColorFilter(Color.YELLOW);  // 🔥 Aplica un filtro de color para que se vea mejor
+                        } else {
+                            weatherIcon.setImageResource(R.drawable.ic_moon);
+                            weatherIcon.setColorFilter(Color.CYAN);  // 🔥 Color azul claro para la luna
+                        }
+
                         if (temperature < 10) {
-                            // Temperaturas bajas (azul)
-
                             currentTempLarge.setTextColor(Color.BLUE);
-
                         } else if (temperature >= 10 && temperature <= 25) {
-                            // Temperaturas moderadas (verde)
                             currentTempLarge.setTextColor(Color.GREEN);
                         } else {
-                            // Temperaturas altas (rojo)
                             currentTempLarge.setTextColor(Color.RED);
                         }
 
@@ -173,14 +174,6 @@ public class HomeFragment extends Fragment {
                 Log.e(TAG, "Error en la solicitud al servidor.", t);
             }
         });
-    }
-
-    private void incrementPendingRequests() {
-        pendingRequests++;
-    }
-
-    private void decrementPendingRequests() {
-        pendingRequests--;
     }
 
     private void scheduleUpdates() {
