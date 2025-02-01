@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -22,7 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.api.service.WeatherApiService;
-import com.example.frontweatherapp.models.models.InstantWeather;
+import com.example.frontweatherapp.models.InstantWeather;
 import com.example.frontweatherapp.network.RetrofitClient;
 import android.icu.util.Calendar;
 import retrofit2.Call;

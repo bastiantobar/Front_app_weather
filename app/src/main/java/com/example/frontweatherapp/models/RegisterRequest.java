@@ -1,4 +1,4 @@
-package com.example.frontweatherapp.models.models;
+package com.example.frontweatherapp.models;
 
 public class RegisterRequest {
     private String email;

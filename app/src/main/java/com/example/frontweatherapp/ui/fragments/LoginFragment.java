@@ -21,8 +21,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.frontweatherapp.R;
-import com.example.frontweatherapp.models.models.LoginRequest;
-import com.example.frontweatherapp.models.models.LoginResponse;
+import com.example.frontweatherapp.models.LoginRequest;
+import com.example.frontweatherapp.models.LoginResponse;
 import com.example.frontweatherapp.api.service.AuthApiService;
 import com.example.frontweatherapp.network.RetrofitClient;
 import com.example.frontweatherapp.ui.main.MenuActivity;

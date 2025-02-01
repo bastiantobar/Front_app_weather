@@ -22,22 +22,11 @@ import androidx.fragment.app.Fragment;
 import com.caverock.androidsvg.SVG;
 import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.api.service.WeatherApiService;
-import com.example.frontweatherapp.models.models.WeatherData;
+import com.example.frontweatherapp.models.WeatherData;
 import com.example.frontweatherapp.network.RetrofitClient;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

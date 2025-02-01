@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.frontweatherapp.R;
 import com.example.frontweatherapp.api.service.WeatherApiService;
-import com.example.frontweatherapp.models.models.WeatherData;
+import com.example.frontweatherapp.models.WeatherData;
 import com.example.frontweatherapp.network.RetrofitClient;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;

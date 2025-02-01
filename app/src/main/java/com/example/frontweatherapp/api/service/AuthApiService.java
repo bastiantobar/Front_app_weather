@@ -2,9 +2,9 @@ package com.example.frontweatherapp.api.service;
 
 
 
-import com.example.frontweatherapp.models.models.LoginRequest;
-import com.example.frontweatherapp.models.models.LoginResponse;
-import com.example.frontweatherapp.models.models.RegisterRequest;
+import com.example.frontweatherapp.models.LoginRequest;
+import com.example.frontweatherapp.models.LoginResponse;
+import com.example.frontweatherapp.models.RegisterRequest;
 
 import java.util.Map;
 
