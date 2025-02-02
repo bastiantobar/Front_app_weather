@@ -86,6 +86,7 @@ public class HomeFragment extends Fragment {
         String token = requireContext()
                 .getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
                 .getString("TOKEN", null);
+        Log.e(TAG, "Token" + token);
 
         if (token == null || token.isEmpty()) {
             Log.e(TAG, "Token no disponible");

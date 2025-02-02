@@ -25,8 +25,10 @@ public class AuthInterceptor implements Interceptor {
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request original = chain.request();
 
-        if (original.url().encodedPath().equals("/auth/login")) {
-            Log.d(TAG, "Solicitud al endpoint de login. No se agrega token.");
+        String path = original.url().encodedPath();
+
+        if (path.equals("/auth/login") || path.equals("/auth/register")) {
+            Log.d(TAG, "Solicitud a " + path + ". No se agrega token.");
             return chain.proceed(original);
         }
 
