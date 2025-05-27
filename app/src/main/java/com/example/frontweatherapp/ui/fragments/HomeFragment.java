@@ -125,14 +125,10 @@ public class HomeFragment extends Fragment {
             ForecastFragment forecastFragment = new ForecastFragment();
             Bundle args = new Bundle();
             args.putString("addressQuery", lastSearchedAddress);
-            // También puedes pasar el objeto WeatherResponse completo si ya lo tienes
-            // if (fullWeatherData != null) { args.putSerializable("fullWeatherData", fullWeatherData); }
             forecastFragment.setArguments(args);
 
-            // Reemplaza R.id.fragment_container con el ID real de tu FrameLayout o contenedor de fragmentos en tu Activity principal
-            // Si estás en MenuActivity, el ID es R.id.nav_host_fragment
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment, forecastFragment) // Usar nav_host_fragment
+                    .replace(R.id.nav_host_fragment, forecastFragment)
                     .addToBackStack(null)
                     .commit();
         });
@@ -212,6 +208,7 @@ public class HomeFragment extends Fragment {
                             double pressure = weatherResponse.getCurrentWeather().getAirPressureAtSeaLevel();
                             double wind = weatherResponse.getCurrentWeather().getWindSpeed();
                             double cloudAreaFraction = weatherResponse.getCurrentWeather().getCloudAreaFraction();
+                            String weatherCondition = weatherResponse.getCurrentWeather().getWeatherCondition(); // Obtener la condición del clima
 
                             tempText.setText(String.format("Temperatura: %.1f°C", temperature));
                             currentTempLarge.setText(String.format(" %.1f°C", temperature));
@@ -220,7 +217,8 @@ public class HomeFragment extends Fragment {
                             windText.setText(String.format("Viento: %.1f m/s", wind));
                             cloudText.setText(String.format("Nubosidad: %.1f%%", cloudAreaFraction));
 
-                            updateWeatherIconAndColor(temperature, cloudAreaFraction);
+                            // Lógica de iconos y color de temperatura mejorada
+                            updateWeatherIconAndColor(temperature, cloudAreaFraction, weatherCondition);
                         } else {
                             Log.e(TAG, "CurrentWeather object is null. No se pueden mostrar los datos del clima actual.");
                             Toast.makeText(requireContext(), "No se pudieron obtener los datos del clima actual.", Toast.LENGTH_LONG).show();
@@ -262,34 +260,57 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void updateWeatherIconAndColor(double temperature, double cloudAreaFraction) {
+    // Método de actualización de iconos y colores con condición del clima
+    private void updateWeatherIconAndColor(double temperature, double cloudAreaFraction, String weatherCondition) {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
-        if (hour >= 6 && hour < 18) {
-            if (cloudAreaFraction < 25) {
-                weatherIcon.setImageResource(R.drawable.ic_sun);
-                weatherIcon.setColorFilter(Color.YELLOW);
-            } else if (cloudAreaFraction >= 25 && cloudAreaFraction <= 75) {
-                weatherIcon.setImageResource(R.drawable.ic_partly_cloudy);
-                weatherIcon.setColorFilter(null);
-            } else {
-                weatherIcon.setImageResource(R.drawable.ic_cloudy);
-                weatherIcon.setColorFilter(null);
-            }
+        int iconResId;
+        // Normalizar la condición del clima a minúsculas para una comparación más fácil
+        String condition = weatherCondition != null ? weatherCondition.toLowerCase(Locale.getDefault()) : "";
+
+        // Prioridad: Lluvia/Nieve/Tormenta, luego Niebla, luego Nubosidad, finalmente Día/Noche
+        if (condition.contains("rain") || condition.contains("lluvia")) {
+            iconResId = R.drawable.ic_rain;
+        } else if (condition.contains("snow") || condition.contains("nieve")) {
+            iconResId = R.drawable.ic_snow;
+        } else if (condition.contains("thunder") || condition.contains("tormenta")) {
+            iconResId = R.drawable.ic_thunderstorm;
+        } else if (condition.contains("fog") || condition.contains("niebla")) {
+            iconResId = R.drawable.ic_fog;
         } else {
-            if (cloudAreaFraction < 25) {
-                weatherIcon.setImageResource(R.drawable.ic_moon);
-                weatherIcon.setColorFilter(Color.CYAN);
-            } else if (cloudAreaFraction >= 25 && cloudAreaFraction <= 75) {
-                weatherIcon.setImageResource(R.drawable.ic_partly_cloudy);
-                weatherIcon.setColorFilter(null);
-            } else {
-                weatherIcon.setImageResource(R.drawable.ic_cloudy);
-                weatherIcon.setColorFilter(null);
+            // Lógica de día/noche y nubosidad si no hay precipitación/niebla
+            if (hour >= 6 && hour < 18) { // Horas de día
+                if (cloudAreaFraction < 25) {
+                    iconResId = R.drawable.ic_sun; // Sol
+                } else if (cloudAreaFraction >= 25 && cloudAreaFraction <= 75) {
+                    iconResId = R.drawable.ic_partly_cloudy; // Sol y nubes
+                } else {
+                    iconResId = R.drawable.ic_cloudy; // Nubes
+                }
+            } else { // Horas de noche
+                if (cloudAreaFraction < 25) {
+                    iconResId = R.drawable.ic_moon; // Luna
+                } else if (cloudAreaFraction >= 25 && cloudAreaFraction <= 75) {
+                    iconResId = R.drawable.ic_partly_cloudy; // Noche parcialmente nublada (usando icono de día)
+                } else {
+                    iconResId = R.drawable.ic_cloudy; // Nubes (noche)
+                }
             }
         }
 
+        weatherIcon.setImageResource(iconResId);
+        // Quitar filtro de color si lo había, o aplicar uno específico si el icono lo requiere
+        if (iconResId == R.drawable.ic_sun) {
+            weatherIcon.setColorFilter(Color.YELLOW);
+        } else if (iconResId == R.drawable.ic_moon) {
+            weatherIcon.setColorFilter(Color.CYAN);
+        } else {
+            weatherIcon.setColorFilter(null);
+        }
+
+
+        // Lógica para el color del texto de la temperatura
         if (temperature < 10) {
             currentTempLarge.setTextColor(Color.BLUE);
         } else if (temperature >= 10 && temperature <= 25) {

@@ -2,7 +2,7 @@ package com.example.frontweatherapp.adapters;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.util.Log; // Importar Log
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,27 +13,27 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.frontweatherapp.R;
-import com.example.frontweatherapp.models.HourlyForecast; // ¡Cambiado de WeatherData a HourlyForecast!
+import com.example.frontweatherapp.models.HourlyForecast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar; // Importar Calendar para la hora del día
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAdapter.HourlyForecastViewHolder> {
 
-    private List<HourlyForecast> hourlyForecastList; // ¡Tipo de lista cambiado!
+    private List<HourlyForecast> hourlyForecastList;
 
-    public HourlyForecastAdapter(List<HourlyForecast> hourlyForecastList) { // ¡Tipo de constructor cambiado!
+    public HourlyForecastAdapter(List<HourlyForecast> hourlyForecastList) {
         this.hourlyForecastList = hourlyForecastList;
     }
 
-    // Método para actualizar los datos del adaptador
-    public void updateData(List<HourlyForecast> newData) { // ¡Tipo de parámetro cambiado!
+    public void updateData(List<HourlyForecast> newData) {
         this.hourlyForecastList.clear();
         this.hourlyForecastList.addAll(newData);
-        notifyDataSetChanged(); // Notifica a la RecyclerView que los datos han cambiado
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -45,7 +45,7 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
 
     @Override
     public void onBindViewHolder(@NonNull HourlyForecastViewHolder holder, int position) {
-        HourlyForecast forecast = hourlyForecastList.get(position); // ¡Tipo de objeto cambiado!
+        HourlyForecast forecast = hourlyForecastList.get(position);
         holder.bind(forecast);
     }
 
@@ -58,6 +58,7 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
         TextView timeTextView;
         TextView tempTextView;
         ImageView hourlyWeatherIcon;
+        TextView weatherConditionTextView;
         TextView windTextView;
         TextView precipitationTextView;
 
@@ -66,22 +67,22 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
             timeTextView = itemView.findViewById(R.id.timeTextView);
             tempTextView = itemView.findViewById(R.id.tempTextView);
             hourlyWeatherIcon = itemView.findViewById(R.id.hourlyWeatherIcon);
+            weatherConditionTextView = itemView.findViewById(R.id.weatherConditionTextView);
             windTextView = itemView.findViewById(R.id.windTextView);
             precipitationTextView = itemView.findViewById(R.id.precipitationTextView);
         }
 
         @SuppressLint("DefaultLocale")
-        public void bind(HourlyForecast forecast) { // ¡Tipo de parámetro cambiado!
+        public void bind(HourlyForecast forecast) {
             // Formatear la hora
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date date = null;
             try {
-                // Asegúrate de que el formato de fecha de entrada coincide con el de tu API
-                // Ejemplo: "2025-05-27T10:00:00Z"
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
-                SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                Date date = inputFormat.parse(forecast.getTime());
+                date = inputFormat.parse(forecast.getTime());
                 timeTextView.setText(outputFormat.format(date));
             } catch (ParseException e) {
-                timeTextView.setText(forecast.getTime()); // En caso de error, muestra la cadena original
+                timeTextView.setText(forecast.getTime());
                 Log.e("HourlyForecastAdapter", "Error parsing date: " + e.getMessage());
             }
 
@@ -89,32 +90,61 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
             windTextView.setText(String.format("%.1f m/s", forecast.getWindSpeed()));
             precipitationTextView.setText(String.format("%.1f mm", forecast.getPrecipitationAmount()));
 
-            // Lógica para el icono y color (simplificada para el ejemplo)
-            // Puedes expandir esta lógica para usar más datos de HourlyForecast si tu API los proporciona
-            // o si puedes inferir un estado del cielo (soleado, nublado, etc.) de los datos existentes.
-            updateHourlyWeatherIconAndColor(forecast.getAirTemperature(), forecast.getPrecipitationAmount());
-        }
+            // Lógica mejorada para el icono y la descripción del clima
+            updateHourlyWeatherIconAndDescription(forecast.getAirTemperature(), forecast.getPrecipitationAmount(), date);
 
-        private void updateHourlyWeatherIconAndColor(double temperature, double precipitationAmount) {
-            // Lógica simple para el icono:
-            // Si hay precipitación, muestra icono de lluvia, si no, sol.
-            // Puedes añadir más complejidad si tienes datos de nubosidad o tipo de precipitación.
-            if (precipitationAmount > 0.0) {
-                hourlyWeatherIcon.setImageResource(R.drawable.ic_rainy); // Asume que tienes un ic_rainy
-                hourlyWeatherIcon.setColorFilter(Color.GRAY);
-            } else {
-                hourlyWeatherIcon.setImageResource(R.drawable.ic_sunny); // Asume que tienes un ic_sunny
-                hourlyWeatherIcon.setColorFilter(Color.YELLOW);
-            }
-
-            // Lógica para el color de la temperatura (similar a HomeFragment)
-            if (temperature < 10) {
+            // Ajustar el color del texto de la temperatura
+            if (forecast.getAirTemperature() < 10) {
                 tempTextView.setTextColor(Color.BLUE);
-            } else if (temperature >= 10 && temperature <= 25) {
+            } else if (forecast.getAirTemperature() >= 10 && forecast.getAirTemperature() <= 25) {
                 tempTextView.setTextColor(Color.GREEN);
             } else {
                 tempTextView.setTextColor(Color.RED);
             }
+        }
+
+        private void updateHourlyWeatherIconAndDescription(double temperature, double precipitationAmount, Date forecastDate) {
+            int iconResId;
+            String conditionText;
+
+            // Determinar si es de día o de noche
+            Calendar calendar = Calendar.getInstance();
+            if (forecastDate != null) {
+                calendar.setTime(forecastDate);
+            }
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            boolean isDayTime = (hour >= 6 && hour < 18); // Asumimos día entre 6 AM y 6 PM
+
+            // Lógica de prioridad: Precipitación > Temperatura/Nubosidad > Día/Noche
+            if (precipitationAmount > 0.5) { // Si hay precipitación significativa
+                if (temperature < 0) { // Si la temperatura es bajo cero, es nieve
+                    iconResId = R.drawable.ic_snow;
+                    conditionText = "Nevando";
+                } else if (precipitationAmount > 5) { // Más de 5mm, posible lluvia fuerte/tormenta
+                    iconResId = R.drawable.ic_thunderstorm;
+                    conditionText = "Lluvia Fuerte";
+                } else { // Lluvia ligera a moderada
+                    iconResId = R.drawable.ic_rain;
+                    conditionText = "Lluvioso";
+                }
+            } else if (temperature < 5 && temperature > -5) { // Frío, pero sin precipitación, podría ser niebla o muy nublado
+                iconResId = R.drawable.ic_fog;
+                conditionText = "Niebla/Nublado";
+            } else { // Sin precipitación, basamos en la hora del día y una inferencia simple de nubosidad
+                if (isDayTime) {
+                    // Aquí podrías añadir lógica para ic_partly_cloudy si tu API te da un valor de nubosidad
+                    // Por ahora, asumimos "Soleado" si no hay precipitación y es de día
+                    iconResId = R.drawable.ic_sunny;
+                    conditionText = "Soleado";
+                } else {
+                    iconResId = R.drawable.ic_moon;
+                    conditionText = "Despejado Noche";
+                }
+            }
+
+            hourlyWeatherIcon.setImageResource(iconResId);
+            weatherConditionTextView.setText(conditionText);
+            hourlyWeatherIcon.setColorFilter(null); // Quitar cualquier filtro de color previo
         }
     }
 }
