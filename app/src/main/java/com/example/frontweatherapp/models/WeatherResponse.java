@@ -1,13 +1,10 @@
-// WeatherResponse.java
 package com.example.frontweatherapp.models;
 
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable; // Añadido para permitir pasar objetos entre Fragments
+import java.io.Serializable; // Importar Serializable
 import java.util.List;
 
-public class WeatherResponse implements Serializable {
-    private static final long serialVersionUID = 1L; // Recomendado para Serializable
-
+public class WeatherResponse implements Serializable { // Implementar Serializable
     @SerializedName("location")
     private Location location;
     @SerializedName("currentWeather")
@@ -54,31 +51,3 @@ public class WeatherResponse implements Serializable {
                 '}';
     }
 }
-
-// Location.java
-
-
-// CurrentWeather.java
-
-
-// HourlyForecast.java
-
-
-// AirQuality.java
-
-
-// Components.java
-
-// WindMap.java
-
-// Feature.java
-
-// Geometry.java
-
-
-// Properties.java
-
-
-// AstronomicalTimes.java
-
-// NasaApod.java

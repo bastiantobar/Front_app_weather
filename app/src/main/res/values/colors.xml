@@ -37,7 +37,7 @@
     <color name="text_primary">#333333</color> <!-- Texto Principal -->
     <color name="text_secondary">#757575</color> <!-- Texto Secundario -->
     <!-- Azul -->
-
+    <color name="dark_grey">#A9A9A9</color>
 
 
 </resources>

@@ -1,11 +1,9 @@
 package com.example.frontweatherapp.models;
 
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable; // Añadido para permitir pasar objetos entre Fragments
+import java.io.Serializable; // Importar Serializable
 
-public class HourlyForecast implements Serializable {
-    private static final long serialVersionUID = 1L; // Recomendado para Serializable
-
+public class HourlyForecast implements Serializable { // Implementar Serializable
     @SerializedName("time")
     private String time;
     @SerializedName("airTemperature")

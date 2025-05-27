@@ -1,7 +1,19 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
+    tools:context=".ui.fragments.HomeFragment">
+
+    <!--
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <gradient
+            android:startColor="#64B5F6"
+            android:endColor="#2196F3"
+            android:angle="270" />
+    </shape>
+    -->
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -17,11 +29,71 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center_horizontal">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
 
+                    <!--
+                    <ImageView
+                        android:id="@+id/menuIcon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_menu"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="Menu"
+                        app:tint="@android:color/white" />
+                    -->
 
-                <!-- Temperatura Grande en la parte superior -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="WeatherYR"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/addressInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingresa una ciudad o dirección"
+                    android:textColorHint="#CCCCCC"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@android:color/white"
+                    android:padding="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:inputType="textPostalAddress"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+                <Button
+                    android:id="@+id/fetchWeatherButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Obtener Clima"
+                    android:backgroundTint="#4CAF50"
+                    android:textColor="@android:color/white"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:layout_marginBottom="16dp"
+                    app:cornerRadius="8dp" />
+
+                <TextView
+                    android:id="@+id/locationNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cargando ubicación..."
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center" />
+
                 <TextView
                     android:id="@+id/currentTempLarge"
                     android:layout_width="match_parent"
@@ -31,9 +103,9 @@
                     android:textStyle="bold"
                     android:gravity="center"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@android:color/white" />
 
-                <!-- Icono dinámico del clima -->
                 <ImageView
                     android:id="@+id/weatherIcon"
                     android:layout_width="120dp"
@@ -42,7 +114,6 @@
                     android:contentDescription="Weather Icon"
                     android:src="@drawable/ic_sunny" />
 
-                <!-- Última actualización -->
                 <TextView
                     android:id="@+id/lastUpdatedText"
                     android:layout_width="match_parent"
@@ -50,10 +121,9 @@
                     android:text="Última actualización: 12:45"
                     android:textAlignment="center"
                     android:textSize="14sp"
-                    android:textColor="#888888"
+                    android:textColor="@android:color/white"
                     android:layout_marginBottom="16dp" />
 
-                <!-- Card para Temperatura (Primera Fila) -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/tempCard"
                     android:layout_width="match_parent"
@@ -72,7 +142,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@drawable/ic_sun"
+                            android:src="@drawable/ic_temperature"
                             android:contentDescription="Temperatura" />
 
                         <TextView
@@ -81,11 +151,11 @@
                             android:layout_height="wrap_content"
                             android:text="Temperatura: 0°C"
                             android:textSize="16sp"
-                            android:paddingStart="8dp" />
+                            android:paddingStart="8dp"
+                            android:textColor="@android:color/black" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- GridLayout para las 4 tarjetas restantes en 2 filas -->
                 <androidx.gridlayout.widget.GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,7 +163,6 @@
                     app:useDefaultMargins="true"
                     android:layout_marginBottom="16dp">
 
-                    <!-- Card para Humedad -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/humidityCard"
                         android:layout_width="0dp"
@@ -122,11 +191,11 @@
                                 android:layout_height="wrap_content"
                                 android:text="Humedad: 0%"
                                 android:textSize="16sp"
-                                android:paddingStart="8dp" />
+                                android:paddingStart="8dp"
+                                android:textColor="@android:color/black" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Card para Presión -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/pressureCard"
                         android:layout_width="0dp"
@@ -155,11 +224,11 @@
                                 android:layout_height="wrap_content"
                                 android:text="Presión: 0 hPa"
                                 android:textSize="16sp"
-                                android:paddingStart="8dp" />
+                                android:paddingStart="8dp"
+                                android:textColor="@android:color/black" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Card para Viento -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/windCard"
                         android:layout_width="0dp"
@@ -188,11 +257,11 @@
                                 android:layout_height="wrap_content"
                                 android:text="Viento: 0 m/s"
                                 android:textSize="16sp"
-                                android:paddingStart="8dp" />
+                                android:paddingStart="8dp"
+                                android:textColor="@android:color/black" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Card para Nubosidad -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cloudCard"
                         android:layout_width="0dp"
@@ -221,11 +290,25 @@
                                 android:layout_height="wrap_content"
                                 android:text="Nubosidad: 0%"
                                 android:textSize="16sp"
-                                android:paddingStart="8dp" />
+                                android:paddingStart="8dp"
+                                android:textColor="@android:color/black" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                 </androidx.gridlayout.widget.GridLayout>
+
+                <Button
+                    android:id="@+id/viewForecastButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ver Pronóstico Horario"
+                    android:backgroundTint="#FF9800"
+                    android:textColor="@android:color/white"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:cornerRadius="8dp" />
 
             </LinearLayout>
 
