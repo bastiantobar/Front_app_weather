@@ -19,7 +19,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.frontweatherapp.R;
-import com.example.frontweatherapp.models.WeatherResponse;
+import com.example.frontweatherapp.models.WeatherResponse; // Importar WeatherResponse
+import com.example.frontweatherapp.ui.fragments.AirQualityFragment; // Importar AirQualityFragment
 import com.example.frontweatherapp.ui.fragments.ForecastFragment;
 import com.example.frontweatherapp.ui.fragments.GraficFragment;
 import com.example.frontweatherapp.ui.fragments.HistoryFragment;
@@ -73,16 +74,17 @@ public class MenuActivity extends AppCompatActivity implements HomeFragment.OnWe
 
             if (itemId == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
-            } else if (itemId == R.id.nav_profile) { // Este es el Mapa, según tu drawer_menu.xml
+            } else if (itemId == R.id.nav_profile) { // CORREGIDO: Usar nav_profile para Mapa
                 selectedFragment = new MapFragment();
-                if (fullWeatherData != null && fullWeatherData.getWindMap() != null) {
-                    Bundle args = new Bundle();
-                    args.putSerializable("windMap", fullWeatherData.getWindMap());
-                    selectedFragment.setArguments(args);
-                } else {
-                    Toast.makeText(this, "Datos del mapa no disponibles. Intente refrescar la pantalla de inicio.", Toast.LENGTH_SHORT).show();
-                }
-            } else if (itemId == R.id.nav_settings) { // Este es el Pronóstico, según tu drawer_menu.xml
+                // Si tienes un objeto WindMap dentro de fullWeatherData, pásalo aquí
+                // if (fullWeatherData != null && fullWeatherData.getWindMap() != null) {
+                //     Bundle args = new Bundle();
+                //     args.putSerializable("windMap", fullWeatherData.getWindMap());
+                //     selectedFragment.setArguments(args);
+                // } else {
+                //     Toast.makeText(this, "Datos del mapa no disponibles. Intente refrescar la pantalla de inicio.", Toast.LENGTH_SHORT).show();
+                // }
+            } else if (itemId == R.id.nav_settings) { // CORREGIDO: Usar nav_settings para Pronóstico
                 selectedFragment = new ForecastFragment();
                 if (fullWeatherData != null && fullWeatherData.getHourlyForecasts() != null) {
                     Bundle args = new Bundle();
@@ -102,6 +104,15 @@ public class MenuActivity extends AppCompatActivity implements HomeFragment.OnWe
                 }
             } else if (itemId == R.id.nav_notifications) {
                 selectedFragment = new NotificationFragment();
+            } else if (itemId == R.id.nav_air_quality) { // Manejar la nueva opción de Calidad del Aire
+                selectedFragment = new AirQualityFragment();
+                if (fullWeatherData != null && fullWeatherData.getAirQuality() != null) {
+                    Bundle args = new Bundle();
+                    args.putSerializable("fullWeatherData", fullWeatherData); // Pasar el WeatherResponse completo
+                    selectedFragment.setArguments(args);
+                } else {
+                    Toast.makeText(this, "Datos de calidad del aire no disponibles. Intente refrescar la pantalla de inicio.", Toast.LENGTH_SHORT).show();
+                }
             } else if (itemId == R.id.action_logout) {
                 cerrarSesion();
                 return true;

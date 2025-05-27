@@ -22,6 +22,10 @@
         android:id="@+id/nav_notifications"
         android:icon="@drawable/ic_notifications"
         android:title="Notificaciones" />
+    <item
+        android:id="@+id/nav_air_quality"
+        android:icon="@drawable/ic_air_quality"
+        android:title="Calidad del Aire" />
 
     <item
         android:id="@+id/action_logout"

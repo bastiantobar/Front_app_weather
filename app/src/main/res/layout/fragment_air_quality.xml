@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingBottom="16dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            android:layout_marginBottom="16dp"
+            app:strokeColor="@color/md_theme_outline"
+            app:strokeWidth="2dp"
+            app:cardBackgroundColor="@android:color/white"> <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calidad del Aire Actual"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/md_theme_primary"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/aqiDateTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cargando fecha..."
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginBottom="16dp" />
+
+            <RelativeLayout
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/aqiGaugeBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_aqi_gauge_arc"
+                    android:contentDescription="Fondo del medidor de AQI" />
+
+                <ImageView
+                    android:id="@+id/aqiGaugeIndicator"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/circle_indicator"
+                    android:contentDescription="Indicador de AQI"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true" /> </RelativeLayout>
+
+            <TextView
+                android:id="@+id/aqiCategoryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cargando..."
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/aqiDescriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="La calidad del aire es satisfactoria y la contaminación del aire presenta poco o ningún riesgo."
+                android:textSize="16sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/aqiLocationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cargando ubicación..."
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            android:layout_marginBottom="16dp"
+            app:strokeColor="@color/md_theme_outline"
+            app:strokeWidth="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Concentración de Contaminantes"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/md_theme_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <com.github.mikephil.charting.charts.HorizontalBarChart
+                    android:id="@+id/pollutantBarChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:strokeColor="@color/md_theme_outline"
+            app:strokeWidth="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Valores Detallados (µg/m³)"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/md_theme_primary"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView style="@style/PollutantLabel" android:text="CO:" />
+                    <TextView android:id="@+id/coValueTextView" style="@style/PollutantValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView style="@style/PollutantLabel" android:text="NO:" />
+                    <TextView android:id="@+id/noValueTextView" style="@style/PollutantValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView style="@style/PollutantLabel" android:text="NO₂:" />
+                    <TextView android:id="@+id/no2ValueTextView" style="@style/PollutantValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView style="@style/PollutantLabel" android:text="O₃:" />
+                    <TextView android:id="@+id/o3ValueTextView" style="@style/PollutantValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView style="@style/PollutantLabel" android:text="SO₂:" />
+                    <TextView android:id="@+id/so2ValueTextView" style="@style/PollutantValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView style="@style/PollutantLabel" android:text="PM2.5:" />
+                    <TextView android:id="@+id/pm25ValueTextView" style="@style/PollutantValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView style="@style/PollutantLabel" android:text="PM10:" />
+                    <TextView android:id="@+id/pm10ValueTextView" style="@style/PollutantValue" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView style="@style/PollutantLabel" android:text="NH₃:" />
+                    <TextView android:id="@+id/nh3ValueTextView" style="@style/PollutantValue" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</ScrollView>
