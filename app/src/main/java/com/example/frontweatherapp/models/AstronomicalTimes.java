@@ -1,3 +1,4 @@
+// AstronomicalTimes.java
 package com.example.frontweatherapp.models;
 
 import com.google.gson.annotations.SerializedName;
@@ -11,9 +12,9 @@ public class AstronomicalTimes implements Serializable {
     @SerializedName("sunset")
     private String sunset;
     @SerializedName("solar_noon")
-    private String solarNoon;
+    private String solarNoon; // El campo es solarNoon, el nombre serializado es solar_noon
     @SerializedName("day_length")
-    private String dayLength;
+    private String dayLength; // El campo es dayLength, el nombre serializado es day_length
     @SerializedName("civil_twilight_begin")
     private String civilTwilightBegin;
     @SerializedName("civil_twilight_end")
@@ -30,8 +31,8 @@ public class AstronomicalTimes implements Serializable {
     // Getters
     public String getSunrise() { return sunrise; }
     public String getSunset() { return sunset; }
-    public String getSolarNoon() { return solarNoon; }
-    public String getDayLength() { return dayLength; }
+    public String getSolarNoon() { return solarNoon; } // Este es el getter correcto
+    public String getDayLength() { return dayLength; } // Este es el getter correcto
     public String getCivilTwilightBegin() { return civilTwilightBegin; }
     public String getCivilTwilightEnd() { return civilTwilightEnd; }
     public String getNauticalTwilightBegin() { return nauticalTwilightBegin; }
@@ -39,7 +40,7 @@ public class AstronomicalTimes implements Serializable {
     public String getAstronomicalTwilightBegin() { return astronomicalTwilightBegin; }
     public String getAstronomicalTwilightEnd() { return astronomicalTwilightEnd; }
 
-    // Setters
+    // Setters (opcional, si necesitas modificar los objetos después de la deserialización)
     public void setSunrise(String sunrise) { this.sunrise = sunrise; }
     public void setSunset(String sunset) { this.sunset = sunset; }
     public void setSolarNoon(String solarNoon) { this.solarNoon = solarNoon; }

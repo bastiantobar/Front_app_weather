@@ -1,49 +1,96 @@
 package com.example.frontweatherapp.models;
 
+import java.io.Serializable;
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable; // Añadido para permitir pasar objetos entre Fragments
 
 public class NasaApod implements Serializable {
-    private static final long serialVersionUID = 1L; // Recomendado para Serializable
 
-    @SerializedName("title")
-    private String title;
-    @SerializedName("explanation")
-    private String explanation;
-    @SerializedName("url")
-    private String url;
-    @SerializedName("copyright")
-    private String copyright;
-    @SerializedName("mediaType")
-    private String mediaType;
     @SerializedName("date")
     private String date;
 
-    // Getters
-    public String getTitle() { return title; }
-    public String getExplanation() { return explanation; }
-    public String getUrl() { return url; }
-    public String getCopyright() { return copyright; }
-    public String getMediaType() { return mediaType; }
-    public String getDate() { return date; }
+    @SerializedName("explanation")
+    private String explanation;
 
-    // Setters
-    public void setTitle(String title) { this.title = title; }
-    public void setExplanation(String explanation) { this.explanation = explanation; }
-    public void setUrl(String url) { this.url = url; }
-    public void setCopyright(String copyright) { this.copyright = copyright; }
-    public void setMediaType(String mediaType) { this.mediaType = mediaType; }
-    public void setDate(String date) { this.date = date; }
+    @SerializedName("hdurl")
+    private String hdurl; // ¡Campo añadido! URL de la imagen en alta definición
 
-    @Override
-    public String toString() {
-        return "NasaApod{" +
-                "title='" + title + '\'' +
-                ", explanation='" + explanation + '\'' +
-                ", url='" + url + '\'' +
-                ", copyright='" + copyright + '\'' +
-                ", mediaType='" + mediaType + '\'' +
-                ", date='" + date + '\'' +
-                '}';
+    @SerializedName("media_type")
+    private String mediaType; // Puede ser "image" o "video"
+
+    @SerializedName("service_version")
+    private String serviceVersion;
+
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("url")
+    private String url; // URL de la imagen o video
+
+    @SerializedName("copyright")
+    private String copyright; // Opcional, puede no estar presente
+
+    // Getters y Setters
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
+
+    public String getHdurl() { // ¡Getter añadido!
+        return hdurl;
+    }
+
+    public void setHdurl(String hdurl) { // ¡Setter añadido!
+        this.hdurl = hdurl;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    public String getServiceVersion() {
+        return serviceVersion;
+    }
+
+    public void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getCopyright() {
+        return copyright;
+    }
+
+    public void setCopyright(String copyright) {
+        this.copyright = copyright;
     }
 }

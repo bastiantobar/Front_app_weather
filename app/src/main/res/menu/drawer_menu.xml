@@ -26,6 +26,13 @@
         android:id="@+id/nav_air_quality"
         android:icon="@drawable/ic_air_quality"
         android:title="Calidad del Aire" />
+    <item
+        android:id="@+id/nav_astronomical_data"
+        android:icon="@drawable/ic_moon_new"
+        android:title="Datos Astronómicos" />
+    <item
+        android:id="@+id/nav_nasa_apod"
+        android:icon="@drawable/ic_galaxy" android:title="NASA APOD" />
 
     <item
         android:id="@+id/action_logout"
