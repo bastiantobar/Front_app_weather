@@ -16,15 +16,6 @@ import com.example.frontweatherapp.models.LocationCoordinates;// ¡IMPORTANTE! I
 
 public interface WeatherApiService {
 
-    @GET("/weather/grafic")
-    Call<ResponseBody> getMeteogram(@Header("Accept") String accept);
-
-    @GET("/weather/instant/last")
-    Call<InstantWeather> getLastInstantWeather(
-            @Header("Authorization") String authorization,
-            @Header("Accept") String accept
-    );
-
     @GET("weather/hourly")
     Call<List<WeatherData>> getHourlyForecasts(@Header("Authorization") String token);
 
