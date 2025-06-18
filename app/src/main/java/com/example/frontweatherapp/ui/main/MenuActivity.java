@@ -202,6 +202,9 @@ public class MenuActivity extends AppCompatActivity implements HomeFragment.OnWe
     public void onWeatherResponseReceived(WeatherResponse weatherResponse) {
         this.fullWeatherData = weatherResponse;
         Log.d(TAG, "onWeatherResponseReceived: WeatherResponse completo recibido y almacenado en MenuActivity.");
+        // Opcional: Si quieres forzar una recarga del fragmento actual si es el de datos astronómicos,
+        // podrías hacerlo aquí, pero primero asegúrate de que los datos se cargan correctamente.
+        // Por ahora, solo nos aseguramos de que 'fullWeatherData' se almacene.
     }
 
     private void cerrarSesion() {
