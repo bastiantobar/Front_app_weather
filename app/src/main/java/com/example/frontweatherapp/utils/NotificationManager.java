@@ -14,13 +14,24 @@ public class NotificationManager {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String userId = user.getUid();
+            // Nueva traza: Mostrar el UID del usuario
+            Log.d(TAG, "updateNotificationPreference: User ID = " + userId);
+
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId);
+            // Nueva traza: Mostrar la ruta completa de la base de datos
+            Log.d(TAG, "updateNotificationPreference: Database Path = " + ref.child("notifications_enabled").getPath());
+            // Nueva traza: Mostrar el valor que se intenta guardar
+            Log.d(TAG, "updateNotificationPreference: Attempting to save isEnabled = " + isEnabled);
+
 
             ref.child("notifications_enabled").setValue(isEnabled)
-                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Preferencia guardada correctamente en Firebase"))
-                    .addOnFailureListener(e -> Log.e(TAG, "Error al guardar preferencia en Firebase", e));
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, "Preferencia guardada correctamente en Firebase para el User ID: " + userId);
+                        Log.d(TAG, "Valor guardado: " + isEnabled);
+                    })
+                    .addOnFailureListener(e -> Log.e(TAG, "Error al guardar preferencia en Firebase para el User ID: " + userId, e));
         } else {
-            Log.e(TAG, "Usuario no autenticado.");
+            Log.e(TAG, "Usuario no autenticado. No se puede actualizar la preferencia de notificación.");
         }
     }
 
@@ -28,14 +39,21 @@ public class NotificationManager {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String userId = user.getUid();
+            // Nueva traza: Mostrar el UID del usuario
+            Log.d(TAG, "getNotificationPreference: User ID = " + userId);
+
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(userId);
+            // Nueva traza: Mostrar la ruta completa de la base de datos
+            Log.d(TAG, "getNotificationPreference: Database Path = " + ref.child("notifications_enabled").getPath());
+
 
             ref.child("notifications_enabled").get().addOnSuccessListener(dataSnapshot -> {
                 boolean isEnabled = dataSnapshot.exists() && Boolean.TRUE.equals(dataSnapshot.getValue(Boolean.class));
+                Log.d(TAG, "Preferencia obtenida de Firebase para el User ID: " + userId + ". isEnabled = " + isEnabled);
                 callback.onPreferenceLoaded(isEnabled);
-            }).addOnFailureListener(e -> Log.e(TAG, "Error al obtener la preferencia de notificaciones", e));
+            }).addOnFailureListener(e -> Log.e(TAG, "Error al obtener la preferencia de notificaciones para el User ID: " + userId, e));
         } else {
-            Log.e(TAG, "Usuario no autenticado.");
+            Log.e(TAG, "Usuario no autenticado. No se puede obtener la preferencia de notificación.");
         }
     }
 

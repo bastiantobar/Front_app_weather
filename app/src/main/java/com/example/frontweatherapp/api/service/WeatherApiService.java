@@ -32,7 +32,7 @@ public interface WeatherApiService {
     Call<WeatherResponse> getWeatherData(
             @Header("Authorization") String authorization,
             @Header("Accept") String accept,
-            @Query("addressQuery") String addressQuery // ¡Parámetro de consulta añadido aquí!
+            @Query("addressQuery") String addressQuery
     );
 
     @GET("weather/historical")
@@ -43,7 +43,7 @@ public interface WeatherApiService {
             @Query("limit") int limit
     );
 
-    @GET("weather/location") // Endpoint para tu servicio de geocodificación en el backend
+    @GET("weather/location")
     Call<LocationCoordinates> getCoordinatesForLocation(
             @Header("Authorization") String authToken,
             @Query("addressQuery") String address
